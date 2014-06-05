@@ -1,0 +1,965 @@
+<?php
+    /*
+        * Users Controller class
+        * Functionality -  Manage the Users Management
+        * Developer - Gurpreet Singh Ahhluwalia
+        * Created date - 12-Feb-2014
+        * Modified date - 
+    */
+    class UsersController extends AppController {
+        var $name = 'Users';
+        
+        public $components = array('Paginator','Image','Common','Email');        
+        
+        function beforeFilter(){
+            parent::beforeFilter();    
+            
+        }
+     
+        /*
+            * User login function
+            * Functionality -  Users login
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 12-Feb-2014
+            * Modified date - 
+        */
+        function login()
+        {            
+            if(isset($this->request->data) && (!empty($this->request->data)))
+            {	
+                $this->User->set($this->request->data);								
+                $this->User->validator()->remove('username', 'unique');
+                if($this->User->validates(array('fieldList' => array('username', 'password')))) 
+				{	
+					$username = $this->request->data['User']['username'];
+					$user_password  = md5($this->request->data['User']['password']);					
+                    $condition = "(User.username = '".$username."' OR User.email = '".$username."') AND User.password = '".$user_password."' AND User.status = '1' AND User.blocked = '0'";
+                    $userInfo = $this->User->find('first',array('fields'=>array('id','first_name','last_name','email','username','password','image'),'conditions'=>array($condition)));
+                    if(!empty($userInfo['User']['password']) && ($userInfo['User']['password'] == $user_password) ) {						
+                        $this->Session->write('UserInfo', $userInfo['User']);
+                        $this->redirect(array('controller' => 'feeds', 'action' => 'index'));
+					}
+					else {						
+						$this->Session->setFlash("Username/Email or Password is incorrect",'default',array('class'=>'error_message'));
+					}
+				}
+            }
+        }
+        /* Facebook Login functionality */
+        function facebook_login()
+        {
+            $this->layout = '';
+            $getUserData =  array();
+            
+            if(!empty($_POST['F_ID']) && ($_POST['type'] == 'F'))
+            {
+                $userInfo['User'] = $_POST; // save the post data into array                                
+                $condition = "User.F_ID = '".$userInfo['User']['F_ID']."'";
+                $getUserInfo = $this->User->find('first',array('fields'=>array('id','F_ID','username','email'),'conditions'=>array($condition)));                
+                
+                if(empty($getUserInfo))
+                {
+                    $this->Session->write('FACEBOOK_SESSION', $userInfo['User']);
+                    echo "0"; // if the user not exist in database
+                    
+                }else{
+                    $this->Session->write('UserInfo', $getUserInfo['User']);
+                    echo "1"; // the user exist in database it will redirect to feed page
+                    
+                }
+                die();    
+            }
+        }
+         /* Twitter Login/Signup functionality Start */
+        function twitter_login()
+        {
+            $this->autoRender = false;	
+            App::import('Vendor', 'Twitter/TwitterOAuth');
+            $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);            
+            $request_token = $connection->getRequestToken(OAUTH_CALLBACK);/* Get temporary credentials. */            
+            $_SESSION['oauth_token'] = $token = $request_token['oauth_token']; /* Save temporary credentials to session. */
+            $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];            
+            switch ($connection->http_code)  /* If last connection failed don't display authorization link. */
+            {
+                case 200:
+                    $url = $connection->getAuthorizeURL($token); 
+                    $this->redirect($url);                    
+                    break;    
+                default:                        
+                    echo 'Could not connect to Twitter. Refresh the page or try again later.';
+            }
+        }
+        function twitter_callback()
+        {   
+            if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] != $_REQUEST['oauth_token']) 
+            {			
+                $_SESSION['oauth_status'] = 'oldtoken';
+                $this->twitter_error();
+            }
+            App::import('Vendor', 'Twitter/TwitterOAuth');    
+            $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);    
+            $access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);                        
+            $_SESSION['access_token'] = $access_token;  /* Save the access tokens. Normally these would be saved in a database for future use. */    
+            unset($_SESSION['oauth_token']);    
+            unset($_SESSION['oauth_token_secret']);            
+            if(200 == $connection->http_code) 
+            {
+                $this->twiiterXcheck();
+                
+            } else {                
+                $this->twitter_error();
+            }            
+        }
+        function twitter_error()
+        {
+            $this->redirect(array('controller'=>'users', 'action'=>'twitter_login'));
+        }
+        function twiiterXcheck()
+        {		
+            $this->autoRender = false;
+            if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) 
+            {
+                $this->twitter_error();
+            }            
+            $access_token = $_SESSION['access_token'];    /* Get user access tokens out of the session. */                
+            App::import('Vendor', 'Twitter/TwitterOAuth'); /* Create a TwitterOauth object with consumer/user tokens. */            
+            $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);    
+            /* If method is set change API call made. Test is called by default. */    
+            $content = $connection->get('account/verify_credentials');
+            $content = Set::Reverse($content);            
+            $twitter_id = $content['id'];
+            $name  = $content['name'];
+            $condition = "User.F_ID = '".$twitter_id."'";
+            $getUserInfo = $this->User->find('first',array('fields'=>array('id','F_ID','username','email'),'conditions'=>array($condition)));                
+            if(empty($getUserInfo))
+            {
+                $userInfo['User']['username']= $name;                
+                $userInfo['User']['F_ID']= $twitter_id;
+                $userInfo['User']['type']= 'T';                
+                $this->Session->write('FACEBOOK_SESSION', $userInfo['User']);                
+                $url = BASE_PATH.'/users/signup/';
+            } else {                                   
+                   $this->Session->write('UserInfo', $getUserInfo);                   
+                   $url = BASE_PATH.'/feeds/';    
+            }            
+            echo "<script>
+                       self.close();									
+                       window.opener.location.href= '$url';
+                </script>";
+        }
+        /* Twitter Login/Signup functionality End */
+        
+    
+        /*
+        * User Sign functionality
+        * Functionality -  Sign up
+        * Developer - Gurpreet Singh Ahhluwalia
+        * Created date - 20-Feb-2014
+        * Modified date - 
+        */
+        function signup()
+        {
+            if ($this->request->is('ajax')) {
+                $this->layout = null;
+                Configure::write('debug', 0);
+            }
+            /* save data into database */
+            if(isset($this->request->data) && (!empty($this->request->data)))
+            { 
+                if(!empty($this->request->data['User']['temp_image']['name']) && empty($this->request->data['User']['image']))
+				{ 
+                    $file = $this->request->data['User']['temp_image'];
+                    $path = 'img/crop_image';					
+                    $folder_name = 'original';
+                    $imageName = $this->request->data['User']['temp_image']['name'];
+                    $multiple[] = array('folder_name'=>'thumb','height'=>'355','width'=>'300'); 
+                    $response = $this->Common->upload_image($file, $path, $folder_name, true, $multiple);
+					$filename = $response;
+                    $originalImage = WWW_ROOT . 'img/crop_image/original/'.$filename;   
+                    if(file_exists($originalImage))
+                    {
+                        unlink($originalImage);                              
+                    }
+                    echo trim($filename);
+					die;	                    
+				}else{
+                    $path = 'img/users';					
+                    $folder_name = '';
+                    $filename = $this->request->data['User']['image'];
+                    $multiple[] = array('folder_name'=>'thumb','height'=>'300','width'=>'300');
+                    $multiple[] = array('folder_name'=>'thumb_small','height'=>'31','width'=>'31');
+                    $this->Common->upload_thumb_image($filename, $path, $folder_name, $multiple);          
+                }
+                $this->User->set($this->request->data);
+                if($this->User->validates()) 
+				{                   
+                    $this->save_user_data($this->request->data);                   
+                }
+            }
+            /* save data into database */
+            $this->set('change_text','0');	
+            /* Facebook Data */
+            $getFacebookData = $this->Session->read('FACEBOOK_SESSION');            
+            if(!empty($getFacebookData))
+            {
+                $text = ($this->Session->read('FACEBOOK_SESSION.type') == 'T') ? 'twitter' : 'facebook';
+                $this->request->data['User'] = $getFacebookData;
+                $this->Session->delete('FACEBOOK_SESSION'); // Session Destroy
+                $this->Session->setFlash("Please verify following details reeceived from ".$text." and continue",'default',array('class'=>'sign_up_message'));
+                $this->set('change_text','1');	
+            }
+            /* Facebook Data */            
+        }
+        
+      
+		/*
+        * User save_user_data functionality
+        * Functionality -  Save user detail in database
+        * Developer - Gurpreet Singh Ahhluwalia
+        * Created date - 20-Feb-2014
+        * Modified date - 
+        */                
+        function save_user_data($getUserData = null)
+        {   
+            $condition = "User.email = '".$getUserData['User']['email']."' OR User.username = '".$getUserData['User']['username']."'";
+            if($getUserData['User']['F_ID'] == 'F' || $getUserData['User']['F_ID'] == 'T')
+            {
+                 $condition = "User.F_ID = '".$getUserData['User']['F_ID']."'";
+            }            
+            $userInfo = $this->User->find('first',array('fields'=>array('id','F_ID','first_name','last_name','email','username','type','image'),'conditions'=>array($condition)));
+            $redirect = 'signup';
+            if(empty($userInfo))
+            {
+                $getUserData['User']['password'] = md5($getUserData['User']['password']);
+                $this->request->data = $getUserData;
+                $this->User->set($this->request->data);
+                if($this->User->save($this->request->data))
+                {                   
+                   
+                   $userInfo['User']['id'] =  $this->User->getLastInsertId();
+                   $userInfo['User']['username'] = $this->request->data['User']['username'];
+                   $userInfo['User']['email'] = $this->request->data['User']['email'];
+                   $this->Session->write('UserInfo', $userInfo['User']);
+                   $redirect = 'profile';
+                }
+            }else{                
+                    $this->Session->setFlash("User is already exists.",'default',array('class'=>'error_message'));
+                    
+            }            
+            $this->redirect($redirect);
+        }
+        
+        
+		/*
+        * User profile functionality
+        * Functionality -  User profile Detail
+        * Developer - Gurpreet Singh Ahhluwalia
+        * Created date - 20-Feb-2014
+        * Modified date - 
+        */                
+        function profile()
+        {			
+			$this->layout = 'login';
+			$this->loadModel('UserProfile');
+			$this->getShoeSizes();
+            $this->getDressSizes();
+            $this->getStateList();			
+			$userId = $this->Session->read('UserInfo.id'); 
+			if(isset($this->request->data) && (!empty($this->request->data)))
+			{
+				$condition =  "UserProfile.user_id = '".$userId."'";
+				$userProfileInfo = $this->UserProfile->find('first',array('fields'=>array('id','user_id'),'conditions'=>array($condition)));            
+				if(!empty($userProfileInfo))
+				{
+					$this->request->data['UserProfile']['id'] = $userProfileInfo['UserProfile']['id'];
+					$this->request->data['UserProfile']['user_id'] = $userProfileInfo['UserProfile']['user_id'];
+				}else{
+					$this->request->data['UserProfile']['user_id'] = $userId;
+				}   
+				$this->UserProfile->set($this->request->data);
+				if($this->UserProfile->save($this->request->data))
+				{  
+					$this->redirect('/feeds/index');
+				}
+			}else{
+				if(!empty($userId))
+				{
+					$conditions = "UserProfile.user_id = ".$userId;	
+					$getData = $this->UserProfile->find('first',array('fields'=>array('UserProfile.id','UserProfile.user_id','UserProfile.shoe_size','UserProfile.dress_size','UserProfile.city','UserProfile.state','UserProfile.website'),'conditions' => array($conditions)));
+					$this->request->data = $getData;
+				}
+			} 
+            
+        }
+        
+        /*
+        * User fashion_network functionality
+        * Functionality -  40 recommeneded followings
+        * Developer - Gurpreet Singh Ahhluwalia
+        * Created date - 20-Feb-2014
+        * Modified date - 
+        */     
+        function fashion_network()
+        {
+            $this->layout = 'login';
+        }
+        
+        
+		
+		/*Image Cropping Functionality start*/
+        /*
+            * crop_image function
+            * Functionality -  Display the browse image in popup
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 12-Feb-2014
+            * Modified date - 
+        */   
+        function crop_image()
+        {   
+            $this->layout = '';
+            $imageName = '';
+            if(!empty($this->request->data['image_name']))
+            {
+                $imageName = $this->request->data['image_name'];
+            }
+            $this->set('image_name',$imageName);  
+        }
+        /*
+            * upload_crop_image function
+            * Functionality -  Upload the crop image into users folder
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 12-Feb-2014
+            * Modified date - 
+        */  
+        function upload_crop_image()
+        {
+            $this->layout = '';
+            if(!empty($this->request->data['coords_x']))
+            {   
+                $sourcePath = WWW_ROOT . 'img/crop_image/thumb/';
+                $destinationPath = WWW_ROOT . 'img/users/';                	
+                $imageName = trim($this->request->data['image_name']);
+                $targ_w = $targ_h = 100;
+                $jpeg_quality = 90;
+                $sourceImage = $sourcePath.$imageName;                
+                $destinationImage = $destinationPath.$imageName;	                
+                $img_r = imagecreatefromjpeg($sourceImage);	
+                $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+                imagecopyresampled($dst_r,$img_r,0,0,$this->request->data['coords_x'],$this->request->data['coords_y'],$targ_w,$targ_h,$this->request->data['coords_w'],$this->request->data['coords_h']);
+                header('Content-type: image/jpeg');
+                imagejpeg($dst_r,$destinationImage,$jpeg_quality);	
+                imagedestroy($img_r);
+                unlink($sourceImage);                
+                echo $imageName;
+                die();
+            }
+        }
+        /*
+            * delete_crop_image function
+            * Functionality -  Delete the image if the user cancel the image to crop
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 12-Feb-2014
+            * Modified date - 
+        */  
+        function delete_crop_image()
+        {
+            $this->layout = '';
+            if(!empty($this->request->data['image_name']))
+            {
+                $imagePath = WWW_ROOT . 'img/crop_image/thumb/'.trim($this->request->data['image_name']);   
+                if(file_exists($imagePath))
+                {
+                      unlink($imagePath);
+                      die();
+                }
+            }
+        }
+        /*Image Cropping Functionality end*/
+		
+		 /*
+            * edit_profile function
+            * Functionality -  edit user profile
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 12-Mar-2014
+            * Modified date - 
+        */         
+         
+        function edit_profile()
+        {
+			$this->getShoeSizes();
+			$this->getDressSizes();
+			$this->getStateList();			
+			$this->loadModel('UserProfile');						
+			if ($this->request->is('ajax')) {
+					$this->layout = null;
+					Configure::write('debug', 0);
+			}
+			$userId = $this->Session->read('UserInfo.id');
+			
+			if(isset($this->request->data) && !empty($this->request->data))
+			{
+					/* image functionality */
+					if(!empty($this->request->data['User']['temp_image']['name']) && empty($this->request->data['User']['image']))
+					{   
+							$file = $this->request->data['User']['temp_image'];
+							$path = 'img/crop_image';					
+							$folder_name = 'original';
+							$imageName = $this->request->data['User']['temp_image']['name'];
+							$multiple[] = array('folder_name'=>'thumb','height'=>'355','width'=>'300'); 
+							$response = $this->Common->upload_image($file, $path, $folder_name, true, $multiple);
+							$filename = $response;                    
+							$originalImage = WWW_ROOT . 'img/crop_image/original/'.$filename;   
+							if(file_exists($originalImage))
+							{
+									unlink($originalImage);                              
+							}
+							echo trim($filename);
+							die;	
+					}else {					
+									if($this->request->data['User']['old_image'] != $this->request->data['User']['image'])
+									{
+											$path = 'img/users';					
+											$folder_name = '';
+											$filename = $this->request->data['User']['image'];
+											$multiple[] = array('folder_name'=>'thumb','height'=>'300','width'=>'300');
+											$multiple[] = array('folder_name'=>'thumb_small','height'=>'31','width'=>'31');
+											$this->Common->upload_thumb_image($filename, $path, $folder_name, $multiple);
+											/* Remove old Images */							
+											$oldImageName = $this->request->data['User']['old_image'];							
+											$originalImage = WWW_ROOT . 'img/users/'.$oldImageName;
+											$thumbImage = WWW_ROOT . 'img/users/thumb/'.$oldImageName;						
+											$thumbImageSmall = WWW_ROOT . 'img/users/thumb_small/'.$oldImageName;						
+											if(file_exists($originalImage))
+											{
+												unlink($originalImage);                              
+											}
+											if(file_exists($thumbImage))
+											{
+												unlink($thumbImage);                              
+											}						
+											if(file_exists($thumbImageSmall))
+											{
+												unlink($thumbImageSmall);                              
+											}
+											$this->Session->delete('UserInfo.image');
+											$this->Session->write('UserInfo.image', $this->request->data['User']['image']);
+									}
+							}
+							/* image functionality */
+									$this->User->set($this->request->data['User']);
+									if($this->User->validates()) 
+									{    
+										if($this->User->save($this->request->data['User']))
+										{
+											$condition =  "UserProfile.user_id = '".$userId."'";
+											$userProfileInfo = $this->UserProfile->find('first',array('fields'=>array('id','user_id'),'conditions'=>array($condition)));            
+											if(!empty($userProfileInfo))
+											{
+												$this->request->data['UserProfile']['id'] = $userProfileInfo['UserProfile']['id'];
+												$this->request->data['UserProfile']['user_id'] = $userProfileInfo['UserProfile']['user_id'];
+												$this->UserProfile->set($this->request->data['UserProfile']);
+												$this->UserProfile->save($this->request->data['UserProfile']);
+											}
+											$this->Session->setFlash('Your Profile has been updated successfully.','default',array('class'=>'alert alert-success'));
+											$this->redirect('/users/edit_profile/');
+										}									
+									}
+					}else{
+							if(!empty($userId))
+							{
+								$this->request->data = $this->User->read(null, $userId);
+							}
+					}
+					$this->set('editprofilelink','active');
+        }
+		
+		
+		
+	
+		
+		/*
+		* change_password function
+		* Functionality -  User Change Password
+		* Developer - Gurpreet Singh Ahhluwalia
+		* Created date - 12-Mar-2014
+		* Modified date - 
+		*/
+		function change_password(){				
+				$this->set('title','Change Password');
+				$this->set('title_for_layout','Change Password');			
+				$this->set('changepasswordlink','active');			
+				$userId = $this->Session->read('UserInfo.id');
+				
+				if(!empty($this->request->data)){
+					$data = $this->User->find('first',array('conditions'=>array('User.id'=>$userId),array('fields'=>array('User.password'))));									
+					if(!empty($data['User']['password']) && ($data['User']['password'] != md5($this->request->data['User']['old_password']))){
+							$this->Session->setFlash('Please enter correct old password.','default',array('class'=>'alert alert-danger'));
+							$this->redirect(array('controller'=>'users','action'=>'change_password'));
+					}
+					unset($this->request->data['User']['old_password']);
+				  unset($this->request->data['User']['confirm_password']);
+					$this->request->data['User']['id'] = $userId;
+					$this->request->data['User']['password'] = md5($this->request->data['User']['password']);
+					
+					$this->User->save($this->request->data);
+					$this->Session->setFlash('Your password has been changed successfully.','default',array('class'=>'alert alert-success'));
+					$this->redirect(array('controller'=>'users','action'=>'edit_profile'));
+				}
+		}  
+		/*
+		* sharing_settings function
+		* Functionality -  User sharing settings
+		* Developer - Gurpreet Singh Ahhluwalia
+		* Created date - 12-Mar-2014
+		* Modified date - 
+		*/        
+		function sharing_settings() {			
+			$this->loadModel('UserSetting');			
+			$userId = $this->Session->read('UserInfo.id');			
+			if(isset($this->request->data) && !empty($this->request->data))
+			{	
+				$this->request->data['UserSetting']['timeline'] =  $this->request->data['timeline'];
+				$this->request->data['UserSetting']['search_visibility'] = $this->request->data['search_visibility'];				
+				$this->request->data['UserSetting']['user_id'] = $userId;				
+				$this->UserSetting->set($this->request->data['UserSetting']);				                    
+				if($this->UserSetting->save($this->request->data))
+				{
+					$this->Session->setFlash('Sharing settings has been saved successfully.','default',array('class'=>'alert alert-success'));
+					$this->redirect('/users/edit_profile/');	
+				}
+			}else{
+					if(!empty($userId))
+					{	
+						$condition =  "UserSetting.user_id = '".$userId."'";
+						$userProfileInfo = $this->UserSetting->find('first',array('fields'=>array('id','user_id'),'conditions'=>array($condition)));
+						if(!empty($userProfileInfo))
+						{
+							$this->UserSetting->unbindModel(array('belongsTo' => array('User')));
+							$this->request->data = $this->UserSetting->read(null, $userProfileInfo['UserSetting']['id']);
+						}	
+					}
+			}			
+			$this->set('sharinglink','active');
+		}
+		
+		/*
+		* notification_settings function
+		* Functionality -  Email notification settings
+		* Developer - Gurpreet Singh Ahhluwalia
+		* Created date - 12-Mar-2014
+		* Modified date - 
+		*/
+		
+		function notification_settings() {			
+			$this->loadModel('UserSetting');			
+			$userId = $this->Session->read('UserInfo.id');			
+			if(isset($this->request->data) && !empty($this->request->data))
+			{	
+				$this->request->data['UserSetting']['follow'] =  $this->request->data['follow'];
+				$this->request->data['UserSetting']['like_share'] = $this->request->data['like_share'];
+				$this->request->data['UserSetting']['comment'] =  $this->request->data['comment'];
+				$this->request->data['UserSetting']['announcement'] = $this->request->data['announcement'];								
+				$this->request->data['UserSetting']['user_id'] = $userId;				
+				$this->UserSetting->set($this->request->data['UserSetting']);				                    
+				if($this->UserSetting->save($this->request->data))
+				{
+					$this->Session->setFlash('Email settings has been saved successfully.','default',array('class'=>'alert alert-success'));
+					$this->redirect('/users/edit_profile/');	
+				}
+			}else{
+					if(!empty($userId))
+					{	
+						$condition =  "UserSetting.user_id = '".$userId."'";
+						$userProfileInfo = $this->UserSetting->find('first',array('fields'=>array('id','user_id'),'conditions'=>array($condition)));
+						if(!empty($userProfileInfo))
+						{
+							$this->request->data = $this->UserSetting->read(null, $userProfileInfo['UserSetting']['id']);
+							$this->UserSetting->unbindModel(array('belongsTo' => array('User')));
+						}	
+					}
+			}	
+			$this->set('notificationlink','active');
+		}		
+		/*
+		* address_book function
+		* Functionality -  User address book
+		* Developer - Gurpreet Singh Ahhluwalia
+		* Created date - 12-Mar-2014
+		* Modified date - 
+		*/
+		function address_book() {
+			
+			$userId = $this->Session->read('UserInfo.id');
+			$this->loadModel('UserAddress');
+			$this->getStateList();
+			$userProfileInfo = array();
+			if(!empty($userId))
+			{	
+				$condition =  "UserAddress.user_id = '".$userId."'";
+				$userAddressInfo = $this->UserAddress->find('first',array('fields'=>array('id','user_id','shipping_name','shipping_street','shipping_street2','shipping_city','shipping_state','shipping_zip','return_name','return_street','return_street2','return_city','return_state','return_zip'),'conditions'=>array($condition)));				
+			}
+			$this->set('addressbooklink','active');
+			$this->set('userProfileInfo',$userAddressInfo);			
+		}
+		
+		
+		
+		/*
+		* form_address_book function
+		* Functionality -  Save address book form data
+		* Developer - Gurpreet Singh Ahhluwalia
+		* Created date - 13-Mar-2014
+		* Modified date - 
+		*/
+		function form_address_book($addressType = null) {			
+			$this->layout = '';
+			$this->loadModel('UserAddress');
+			$this->getStateList();			
+			$userId = $this->Session->read('UserInfo.id');			
+			if(isset($this->request->data) && !empty($this->request->data))
+			{
+				$this->request->data['UserAddress']['user_id'] = $userId;					
+				$this->UserAddress->set($this->request->data['UserAddress']);				                    
+				if($this->UserAddress->save($this->request->data))
+				{
+					$this->Session->setFlash('Address has been saved successfully.','default',array('class'=>'alert alert-success'));
+					$this->redirect('/users/address_book/');	
+				}
+			}else
+			{
+				if(!empty($userId))
+				{	
+					$condition =  "UserAddress.user_id = '".$userId."'";
+					$userAddressInfo = $this->UserAddress->find('first',array('fields'=>array('id','user_id'),'conditions'=>array($condition)));
+					if(!empty($userAddressInfo))
+					{
+						$this->request->data = $this->UserAddress->read(null, $userAddressInfo['UserAddress']['id']);
+						$this->UserAddress->unbindModel(array('belongsTo' => array('User')));
+					}	
+				}
+			}			
+			$this->set('addressType',$addressType);				
+		}
+		
+    
+		
+			/*
+		* forgot_password function
+		* Functionality -  User forgot Password functionality
+		* Developer - Gurpreet Singh Ahhluwalia
+		* Created date - 12-Mar-2014
+		* Modified date - 
+        */    
+		
+		function forgot_password(){
+            $this->layout = "login";
+            if(!empty($this->request->data)){
+				//$this->request->data = Sanitize::clean($this->request->data, array('encode' => false));
+				
+				
+				if(empty($this->request->data['User']['username'])){ 
+					$this->Session->setFlash('Please enter your email/username.','default',array('class'=>'alert alert-danger'));
+					$this->redirect(array('controller'=>'users','action'=>'forgot_password'));
+				}
+				//$this->User->validate=$this->User->validateForgotPassword;
+				
+				//if($this->User->validates()) { 
+					if(!empty($this->request->data['User']['username'])){ 
+						$condition = "(User.username = '".$this->request->data['User']['username']."' OR User.email = '".$this->request->data['User']['username']."') ";
+							$userArr=$this->User->find('first',array('conditions'=>array($condition),'fields'=>array('User.id','User.first_name','User.last_name','User.email')));
+							
+							if(count($userArr) > 0){  
+								$passwd = $this->Common->getRandPass();
+								$this->User->id = $userArr['User']['id']; 
+								$hashCode =  md5(uniqid(rand(), true));
+								$this->User->saveField('random_key',$hashCode, false);
+								App::import('Model','Emailtemplate');
+								$this->Emailtemplate = new Emailtemplate;
+								$SITE_URL = Configure::read('BASE_URL');
+								//$to = $userArr['User']['email'];
+								$link =  '<a href = "' .$SITE_URL. '/users/secure_check/'.$hashCode.'">Link </a>';  
+								$template = $this->Emailtemplate->getEmailTemplate('admin_forgot_password');
+								$to = $userArr['User']['email'];
+								$data1 = $template['Emailtemplate']['template'];					
+								$data1 = str_replace('[NAME]',ucfirst($userArr['User']['first_name']),$data1);
+								$data1 = str_replace('[EMAIL]',$userArr['User']['email'],$data1);	
+                                $data1 = str_replace('[LINK]',$link,$data1);
+								$subject = ucfirst(str_replace('_', ' ', $template['Emailtemplate']['name']));
+								
+								$send_mail = $this->sendEmail($to,$subject,$data1);
+								$this->Session->setFlash('Please check your mailbox to access the account.','default',array('class'=>'alert alert-danger'));
+								$this->redirect(array('controller'=>'users','action'=>'login'));
+							} else{ 
+								$this->Session->setFlash('Invalid email/username.','default',array('class'=>'alert alert-danger'));
+								$this->redirect(array('controller'=>'users','action'=>'forgot_password'));
+							}
+						
+					}
+				//}
+			}      
+     
+        }
+        function secure_check($uniqueKey){
+            $this->layout = 'login';
+			$this->set('title','Forgot Password');
+			$this->set('title_for_layout','Forgot Password');
+			$this->set('uniqueKey',$uniqueKey);
+			$data = $this->User->find('first',array('conditions'=>array('User.random_key'=>$uniqueKey)));
+			if(empty($data)){
+				$this->Session->setFlash('Error Occured, Plesae check your secure code.','default',array('class'=>'alert alert-danger'));
+				$this->redirect(array('controller'=>'users','action'=>'login'));
+			}
+			if(!empty($this->request->data)){
+				$userId = $data['User']['id'];
+				$this->request->data['User']['id'] = $userId;
+                $this->request->data['User']['password'] = md5($this->request->data['User']['password']);
+				$this->request->data['User']['random_key'] = "";
+				$this->User->save($this->request->data);
+				$this->Session->setFlash('Password changed successfully','default',array('class'=>'alert alert-success'));
+				$this->redirect(array('controller'=>'users','action'=>'login'));
+			}
+        }
+		
+		
+		
+		/*
+		* User_tagging function
+		* Functionality -  User Tagging Funtionality
+		* Developer - Gurpreet Singh Ahhluwalia
+		* Created date - 21-Mar-2014
+		* Modified date - 
+		*/
+		
+		function tagging()
+		{
+			$this->layout = null;
+			
+			
+			
+			$condition = "(User.status = '1' AND User.blocked = '0' AND User.username LIKE '%".$this->request->params['pass']['0']."%')";
+			$userArr=$this->User->find('all',array('conditions'=>array($condition),'fields'=>array('id','first_name','last_name','username','image')));
+			
+			
+			
+			if(!empty($userArr))
+			{
+				$userListArray = array();
+				for($i=0 ;$i < count($userArr); $i++)
+				{
+					$userListArray[$i]['id'] = $userArr[$i]['User']['id'];
+					$userListArray[$i]['name'] = '@'.$userArr[$i]['User']['username'];
+					$userListArray[$i]['avatar'] = BASE_PATH.'/img/users/thumb_small/'.$userArr[$i]['User']['image'];
+					$userListArray[$i]['fullname'] = $userArr[$i]['User']['first_name']. " ". $userArr[$i]['User']['last_name'];
+					$userListArray[$i]['type'] = "contact";
+				}
+			}			
+			echo $userArrs = json_encode($userListArray);
+			
+
+			die();
+		}
+		
+		
+		/*
+		* User logout functionality
+		* Functionality -  logout User
+		* Developer - Gurpreet Singh Ahhluwalia
+		* Created date - 20-Feb-2014
+		* Modified date - 
+		*/ 
+		function logout()
+		{
+				$this->Session->delete('UserInfo');
+				$this->redirect('/');     
+		}
+        
+        
+        
+        
+        
+        
+        /* Admin Functionality start */
+        
+        /*
+            * admin_index function
+            * Functionality -  Users Listing
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 12-Feb-2014
+            * Modified date - 
+        */
+        function admin_index()
+        {            
+            /* Active/Inactive/Delete functionality */
+			if((isset($this->data["User"]["setStatus"])))
+			{
+				if(!empty($this->request->data['User']['status'])){
+					$status = $this->request->data['User']['status'];
+				}else
+				{
+					$this->Session->setFlash("Please select the action.",'default',array('class'=>'alert alert-danger'));	
+					$this->redirect(array('action' => 'index'));
+					
+				}
+				$CheckedList = $this->request->data['checkboxes'];
+				$model='User';				
+				$controller = $this->params['controller'];				
+				$action = $this->params['action'];				
+				$this->setStatus($status,$CheckedList,$model,$controller,$action); 			 
+			}
+			/* Active/Inactive/Delete functionality */			
+			$value ="";
+			$show ="";
+            $account_type ="";
+			$criteria='1 = 1'; 
+			if(!empty($this->request->data['Search'])){
+                if(isset($this->request->data['Search']['keyword']) && !empty($this->request->data['Search']['keyword'])){		   
+					$value = $this->request->data['Search']['keyword'];				  
+				}	
+				if($value !="") {
+						$criteria .= " AND User.username LIKE '%".$value."%' OR User.first_name LIKE '%".$value."%' OR User.last_name LIKE '%".$value."%' OR User.email LIKE '%".$value."%'";						
+				}
+                /* User Type Search functionality */
+				if(isset($this->data['Search']['accounttype'])){
+					$account_type = $this->data['Search']['accounttype'];					
+				}				
+				if(isset($account_type) && $account_type !=""){			
+					$criteria .= " AND User.type = '".$account_type."'";			
+				}
+				/* User Type Search functionality */                
+                /* Active & Inactive Search functionality */
+				if(isset($this->data['Search']['show'])){
+					$show = $this->data['Search']['show'];					
+				}				
+				if(isset($show) && $show =='0'){			
+					$criteria .= " AND User.status = '0'";			
+				}else if(isset($show) && $show =='1'){
+					$criteria .= " AND User.status = '1'";
+				}
+				/* Active & Inactive Search functionality */				
+				
+			}			
+            $this->Paginator->settings = array('conditions' => array($criteria),
+				'limit' => 10,
+				'fields' => array('User.id',
+								  'User.type',
+                                  'User.first_name',
+                                  'User.last_name',
+                                  'User.email',
+                                  'User.username',
+                                  'User.blocked',
+								  'User.status',
+								  'User.created',
+                                  'UserProfile.id'
+                                  
+								  ),
+				'order' => array(
+					'User.id' => 'DESC'
+				)
+            );
+			$this->set('getData',$this->Paginator->paginate('User'));
+			$this->set('keyword', $value);
+			$this->set('show', $show);
+			$this->set('navusers','class = "active"');			
+			$this->set('breadcrumb','Users');			
+        }        
+        /*
+            * admin_addedit function
+            * Functionality -  Add & edit the Users
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 12-Feb-2014
+            * Modified date - 
+        */
+        function admin_addedit($id = null)
+        {	
+			$this->loadModel('UserProfile');
+            if(empty($this->request->data)){				
+					$this->request->data = $this->User->read(null, base64_decode($id));
+			}else
+			if(isset($this->request->data) && !empty($this->request->data))
+			{   
+                $this->User->set($this->request->data);	
+				if($this->User->validates()) 				
+				{ 
+					$this->request->data['User']['id'] = base64_decode($this->request->data['User']['id']);										
+					if($this->User->save($this->request->data))
+					{ 	
+                        if($this->request->data['User']['profile_id'] =='')
+                        {
+                            $userInfo['UserProfile']['id'] = '';                        
+                            $userInfo['UserProfile']['user_id'] =  ($this->request->data['User']['id'] != '') ? $this->request->data['User']['id'] : $this->User->getLastInsertId();                                
+                            $this->UserProfile->save($userInfo);
+                        }
+                        $this->Session->setFlash("User has been saved sucessfully.",'default',array('class'=>'alert alert-success'));	
+						$this->redirect(array('action' => 'index'));
+					}
+				}    
+			}
+			$textAction = ($id == null) ? 'Add' : 'Update';			
+			$this->set('navusers','class = "active"');			
+			$this->set('action',$textAction);			
+			$this->set('breadcrumb','Users/'.$textAction);
+			
+        }
+        /*
+            * admin_user_profile function
+            * Functionality -  User profile view
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 24-Feb-2014
+            * Modified date - 
+        */
+        function admin_user_profile($id = null)
+        {
+            $this->loadModel('UserProfile');
+            $getData =  array();
+            if(!empty($id))
+            {
+                $conditions = "UserProfile.id = ".base64_decode($id);	
+                $getData = $this->UserProfile->find('first',array('fields'=>array('UserProfile.id','UserProfile.user_id','UserProfile.shoe_size','UserProfile.dress_size','UserProfile.city','UserProfile.state','UserProfile.website','User.id','User.username'),'conditions' => array($conditions)));
+                $this->getDressSizes();
+                $this->getShoeSizes();
+                $this->getStateList();
+            }
+            $this->set(compact('getData'));
+        }
+        
+        /*
+            * admin_user_blocked function
+            * Functionality -  Blocked , Unblocked Users
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 24-Feb-2014
+            * Modified date - 
+        */
+        function admin_user_blocked($id = null, $blocked = null)
+        {
+            if(!empty($id) && !empty($blocked))
+            {
+                $blocked = (base64_decode($blocked) == 0) ? '1' : '0';                
+                $this->User->id = base64_decode($id);														
+                $this->User->saveField('blocked', $blocked);
+            }
+            $this->redirect('index');        
+        }
+        /*
+            * admin_delete function
+            * Functionality -  Add & edit the Users
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 12-Feb-2014
+            * Modified date - 
+        */       
+		function admin_delete($id = null)
+        {
+			if(!empty($id))
+			{
+				$this->User->id = base64_decode($id);
+				$this->User->delete();
+				$this->Session->setFlash("User has been deleted sucessfully.",'default',array('class'=>'alert alert-success'));	
+				$this->redirect('index');
+			}
+		}
+        /* Admin Functionality end */        
+        
+       
+        
+        
+}
+?>

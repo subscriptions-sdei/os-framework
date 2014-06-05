@@ -1,0 +1,196 @@
+@CHARSET "UTF-8";
+.sbHolder{
+	background: #fff;
+	border:1px solid #B3B2AE;
+	font-size: 12px;
+	height: 37px;
+	position: relative;
+	/*width: 200px;*/
+	width:100%;
+	/*border-radius:6px;*/
+	text-transform:uppercase;
+}
+.sbHolder:focus .sbSelector{
+	
+}
+.sbSelector{
+	display: block;
+	height: 37px;
+	left: 0;
+	line-height: 38px;
+	outline: none;
+	overflow: hidden;
+	position: absolute;
+	text-indent: 10px;
+	top: 0;
+	/*width: 170px;*/
+	width:85%;
+}
+.sbSelector:link, .sbSelector:visited, .sbSelector:hover{
+	color: #232323;
+	outline: none;
+	text-decoration: none;
+}
+.sbToggle{
+	background: url(../img/frontend/select-icons.png) 0 -115px no-repeat;
+	display: block;
+	height: 35px;
+	outline: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 30px;
+}
+.sbToggle:hover{
+	background: url(../img/frontend/select-icons.png) 0 -115px no-repeat;
+}
+.sbToggleOpen{
+	background: url(../img/frontend/select-icons.png) 0 -115px no-repeat;
+}
+.sbToggleOpen:hover{
+	background: url(../img/frontend/select-icons.png) 0 -115px no-repeat;
+}
+.sbHolderDisabled{
+	background-color: #3C3C3C;
+	border: solid 1px #B3B2AE;
+}
+.sbHolderDisabled .sbHolder{
+	
+}
+.sbHolderDisabled .sbToggle{
+	
+}
+.sbOptions{
+	background: #fff;
+	border: solid 1px #B3B2AE;
+	list-style: none;
+	left: -1px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 35px !important;
+	/*width: 200px;*/
+	width:100%;
+	z-index: 111;
+	overflow-y: auto;
+}
+.sbOptions li{
+	padding: 0 5px;
+}
+.sbOptions a{
+	border-bottom: dotted 1px #B3B2AE;
+	display: block;
+	outline: none;
+	padding: 7px 0 7px 3px;
+	font-size:12px;
+}
+.sbOptions a:link, .sbOptions a:visited{
+	color: #B3B2AE;
+	text-decoration: none;
+}
+.sbOptions a:hover,
+.sbOptions a:focus,
+.sbOptions a.sbFocus{
+	color: #666;
+}
+.sbOptions li.last a{
+	border-bottom: none;
+}
+.sbOptions .sbDisabled{
+	border-bottom: dotted 1px #B3B2AE;
+	color: #999;
+	display: block;
+	padding: 7px 0 7px 3px;
+}
+.sbOptions .sbGroup{
+	border-bottom: dotted 1px #B3B2AE;
+	color: #fff;
+	display: block;
+	font-weight: bold;
+	padding: 7px 0 7px 3px;
+}
+.sbOptions .sbSub{
+	padding-left: 17px;
+}
+
+
+
+/*	wrapper divs */
+.custom-checkbox, .custom-radio { position: relative; float:left; margin:0 8px 0 0;}
+	
+/* input, label positioning */
+.custom-checkbox input, 
+.custom-radio input {
+	position: absolute;
+	left: 2px;
+	top: 3px;
+	margin: 0;
+	z-index: 0;
+	visibility:hidden;
+}
+
+.custom-checkbox input{margin:2px 5px 0 0;}
+
+.custom-checkbox label, 
+.custom-radio label {
+	display: block;
+	position: relative;
+	z-index: 1;
+	padding-right: 1em;
+	line-height: 1;
+	padding: 3px 0 3px 25px;
+	margin: 0 0 /*.2em*/;
+	cursor: pointer;
+}
+
+	
+/* states */
+.custom-checkbox label { background: url(../img/frontend/checkbox.png) no-repeat; }
+
+.custom-radio label { background: url(../img/frontend/radiobutton.png) no-repeat; }
+
+.custom-radio label {
+	background-position: -14px -16px;
+}
+
+.custom-radio label.hover,
+.custom-radio label.focus {
+	background-position: -14px -116px;
+}
+
+.custom-radio label.checked {
+	background-position: -14px -216px;
+}
+
+
+.custom-checkbox label.checkedHover, 
+.custom-checkbox label.checkedFocus {
+	background-position: -14px -312px;
+}
+
+.custom-checkbox label{
+	background-position: 0 3px;
+}
+
+.custom-checkbox label.hover,
+.custom-checkbox label.focus{
+	background-position: 0 -97px;
+}
+
+.custom-checkbox label.checked{
+	background-position: 0 -197px;
+}
+
+
+.custom-checkbox label.focus, 
+.custom-radio label.focus {
+	outline: /*1px dotted #ccc*/none;
+}
+
+/*------Custom-----*/
+.rowinputs .custom-checkbox, .rowinputs .custom-radio{float:none; margin:0;}
+.dropdown.size .custom-checkbox label, .dropdown.size .custom-radio label{background:none;}
+
+.socialselect .custom-checkbox label, .socialselect .custom-radio label,
+.socialselect .custom-radio label, .socialselect .custom-radio label{background:none; padding-left:0;}
+

@@ -1,0 +1,132 @@
+10
+
+dir
+3
+http://172.24.0.222/repository/pluginproj/pluginprojsvn/app
+http://172.24.0.222/repository/pluginproj
+
+
+
+2014-04-16T06:11:58.542120Z
+3
+pluginproj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+16eae78c-e162-4dc8-ae84-0fb7f4948078
+
+Locale
+dir
+
+Test
+dir
+
+Model
+dir
+
+tmp
+dir
+
+webroot
+dir
+
+Console
+dir
+
+Controller
+dir
+
+Config
+dir
+
+Lib
+dir
+
+View
+dir
+
+.htaccess
+file
+
+
+
+
+2014-04-16T06:03:54.342918Z
+a2a9efe935decfd5f498bf0d83075574
+2014-04-16T05:49:59.141683Z
+2
+pluginproj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+140
+
+Vendor
+dir
+
+index.php
+file
+
+
+
+
+2014-04-16T06:03:54.342918Z
+32f7ef8d62a60725e277af92b1fc836e
+2014-04-16T05:49:59.141683Z
+2
+pluginproj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+695
+
+Plugin
+dir
+

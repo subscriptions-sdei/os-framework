@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake
+END
+LICENSE.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/LICENSE.txt
+END
+VERSION.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/VERSION.txt
+END
+bootstrap.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/bootstrap.php
+END
+basics.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/basics.php
+END

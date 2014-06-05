@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/TestSuite/Reporter
+END
+CakeHtmlReporter.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/TestSuite/Reporter/CakeHtmlReporter.php
+END
+CakeTextReporter.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/TestSuite/Reporter/CakeTextReporter.php
+END
+CakeBaseReporter.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/TestSuite/Reporter/CakeBaseReporter.php
+END

@@ -1,0 +1,16 @@
+<?php    
+    class CategoryDressSize extends AppModel {
+        var $name = 'CategoryDressSize';
+        
+        
+        public $belongsTo = array(
+        'DressSize' => array(
+            'className' => 'DressSize',
+            'foreignKey' => 'dress_id',            
+            'dependent' => true
+        )
+        );
+        
+         
+    }
+?>

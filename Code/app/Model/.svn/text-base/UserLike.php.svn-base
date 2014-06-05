@@ -1,0 +1,14 @@
+<?php    
+    class UserLike extends AppModel {
+        var $name = 'UserLike';
+        
+        public $belongsTo = array(
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id'
+        )
+        );
+        
+         
+    }
+?>

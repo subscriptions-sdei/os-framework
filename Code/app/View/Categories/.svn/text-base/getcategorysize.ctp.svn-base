@@ -1,0 +1,45 @@
+   <?php
+        if(!empty($sizeArray))
+        {
+            echo $this->Html->link('<span class="dplabel">Size</span>  <span class="dp_arrow"><i class="caret"></i></span>','javascript:void(0)',array('escape'=>false,'data-toggle' => "dropdown" ,'class'=>"dropdown-toggle"));            
+            echo "<ul class='dropdown-menu' id='categorySizeIdList'>";
+            foreach($sizeArray as $sizeArray) {    
+                $setID = 'sz_check-'.str_replace('.','_',$sizeArray);    
+                echo "<li>";        
+                echo $this->Form->input('size', array('div' => false,'type' => 'checkbox','name' => 'size','id' => $setID,'label' => false, 'value' => $sizeArray)); 
+                echo "<label for='".$setID."' class='font14'>".$sizeArray."</label>";
+                echo "</li>";
+            }
+            echo "<li>";
+                echo $this->Form->text('size_exist',array('value'=> '1','id' => 'sizeExistsId'));
+            echo "</li>";
+            echo "</ul>";
+        }
+    ?>
+    <script type="text/javascript">        
+    jQuery(function(){	        
+        if(jQuery('#sizeExistsId').val() == 1){
+            jQuery('#sizeContainerId').addClass('dropdown size');
+            jQuery('#sizeContainerId').show();
+        }else{
+            jQuery('#sizeContainerId').removeClass('dropdown size');
+            jQuery('#sizeContainerId').hide();
+        }        
+        jQuery('#categorySizeIdList input').attr('name', 'size[]');        
+        jQuery( "#categorySizeIdList input").click(function() {
+          var getSize = jQuery(this).val();                
+          var getSizeId = getSize.replace('.', "_");
+          if(jQuery(this).is(':checked'))
+          {	
+              var content ="<li data-oid='brand_1' id='sizeID_"+getSizeId+"'>"+getSize+ "<button class='remove hidden-phone serachCategoryCls' onclick=sizeSearchFilter('"+getSizeId+"') >x</button></li>";
+              jQuery('#sizeSearchDivId').append(content);
+              jQuery('#sizeIdList').val(jQuery('#sizeIdList').val()+getSize+'@');				
+          }else{							
+              jQuery('#sizeID_'+getSizeId).remove();
+              jQuery('#sizeIdList').val(jQuery('#sizeIdList').val().replace(getSize+"@", ""));				
+          }						
+          ifUserSearch();			
+          changePageView(jQuery('#viewId').val());
+      });
+     })
+    </script>

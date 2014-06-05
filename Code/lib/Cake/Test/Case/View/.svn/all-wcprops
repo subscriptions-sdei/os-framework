@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/View
+END
+MediaViewTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/View/MediaViewTest.php
+END
+ViewTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/View/ViewTest.php
+END
+HelperCollectionTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/View/HelperCollectionTest.php
+END
+XmlViewTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/View/XmlViewTest.php
+END
+ScaffoldViewTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/View/ScaffoldViewTest.php
+END
+ThemeViewTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/View/ThemeViewTest.php
+END
+HelperTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/View/HelperTest.php
+END
+JsonViewTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/View/JsonViewTest.php
+END

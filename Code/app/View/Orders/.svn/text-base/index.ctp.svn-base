@@ -1,0 +1,227 @@
+<?php
+    echo $this->Html->script('jquery.validate');
+    echo $this->Html->script('frontend_custom/order_page');
+?>
+<section class="container content">
+    <section class="content-frame font14 twocol clearfix">        
+        <!--Right Start-->
+        <section class="rightcon">
+            <!--Product Details Start-->
+            <section class="boxframe item-details">
+                <section class="padding10">
+                    <section class="topdetails">
+                        <section class="userphoto largerphoto"><img src="../../img/frontend/userpic.jpg" alt="" /></section>
+                        <section class="topuser-des">
+                            <p class="post-title"><?php echo $itemData['Item']['name']; ?></p>
+                            <p class="topsize font16"><strong><?php echo $itemData['User']['username']; ?></strong></p>
+                        </section>
+                    </section>
+                </section>
+               
+                 <section class="post-price">
+                    <ul class="checkout-price font16">
+                        <li><?php  $itemPrice = $itemData['Item']['price']; ?>
+                            <span class="leftlabel">Price</span>
+                            <span class="rightlabel"><?php echo '$'.$itemPrice; ?></span>
+                        </li>
+                        <li><?php  $taxes = 0.00; ?>
+                            <span class="leftlabel">Taxes (0.0%)</span>
+                            <span class="rightlabel">$ <?php echo $taxes; ?></span>
+                        </li>
+                        <li><?php  $shipment = 0.00; ?>
+                            <span class="leftlabel">Shipping</span>
+                            <span class="rightlabel">$<?php echo $shipment; ?></span>
+                        </li>
+                        <li><?php $total = $itemPrice + $taxes + $shipment; ?>
+                            <span class="leftlabel">Total</span>
+                            <span class="rightlabel">$ <?php echo $total; ?></span>
+                        </li>
+                        <li class="netcharged">
+                            <span class="leftlabel">Net charged to card</span>
+                            <span class="rightlabel">$<?php echo $total; ?></span>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+            <!--Product Details Closed-->
+
+        </section>
+        <!--Right Closed-->
+        <?php   echo $this->Form->create('Order',array('class'=>'','id'=>'order_form','url'=>array('controller'=>'orders','action'=>'index',$itemUniqueId))); ?>
+        <!--Left Start-->
+        <section class="leftcon">
+            <section class="boxframe column-widget">
+                <h1 class="head">Checkout</h1>
+                <section class="boxsection row-widget">
+                    <h2>Shipping Address</h2>
+                    <p class="subtitle">This is where your item will be delivered</p>
+            
+            <?php echo $this->Form->hidden('Order.item_price',array('value'=>$itemData['Item']['price']));?>
+            <?php echo $this->Form->hidden('Order.total_amt',array('value'=>1));?>
+                    <ul class="boxsection-wt form_widget">
+                        <li>
+                            <label>Name</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.shipping_name',array('label' => false,'div' => false, 'placeholder' => 'UserName','class' => 'textfield fullwidth','maxlength' => 55));?>
+                                
+                            </p>
+                        </li>
+                        
+                        <li>
+                            <label>Street 1</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.shipping_street_1',array('label' => false,'div' => false, 'placeholder' => 'Street 1','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                         <li>
+                            <label>Street 2</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.shipping_street_2',array('label' => false,'div' => false, 'placeholder' => 'Street 2','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                        
+                        <li>
+                            <label>City</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.shipping_city',array('label' => false,'div' => false, 'placeholder' => 'City','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                        <li>
+                            <label>State</label>
+                            <p class="padrt">
+                              <?php echo $this->Form->input('OrderDetail.shipping_state',array('type'=>'select','options'=>$statelist,'label' => false,'div' => false, 'empty' => 'Select State','class' => 'select fullwidth'));?>
+                            </p>
+                        </li>
+                        <li>
+                            <label>Zip</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.shipping_zip',array('label' => false,'div' => false, 'placeholder' => 'Zip','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                        <li>
+                            <label>Phone</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.shipping_phone',array('label' => false,'div' => false, 'placeholder' => 'Phone','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                    </ul>
+                </section>
+                
+                <section class="boxsection row-widget">
+                    <h2>Payment Details</h2>
+                    <p class="subtitle">Your credit card information to make payment</p>                        
+                    <ul class="boxsection-wt form_widget">
+                        <li>
+                            <label>Name On Card</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('Order.name_on_card',array('div'=>false,'label'=>false,'placeholder' => 'Card Holder Name','class' => 'textfield fullwidth','type'=>'text','maxlength'=>50)); ?>
+                            </p>
+                        </li>
+                        <li>
+                            <label>CC Number</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('Order.cc_number',array('div'=>false,'label'=>false,'placeholder' => 'Credit Card Number','class' => 'textfield fullwidth','type'=>'text','maxlength'=>16)); ?>
+                            </p>
+                        </li>
+                        <li>
+                            <label>Expiration</label>
+                            <p class="padrt">
+                                <?php $months = array('01'=>'Jan','02'=>'Feb','03'=>'Mar','04'=>'Apr','05'=>'May','06'=>'Jun','07'=>'Jul','08'=>'Aug','09'=>'Sep','10'=>'Oct','11'=>'Nov','12'=>'Dec') ?>
+                               <?php echo $this->Form->select('Order.exp_month',$months,array('div'=>false,'label'=>false,'class' => 'select','empty'=>'Select Month')); ?>
+                            
+                            <?php for($i=date('Y');$i < date('Y')+10; $i++){
+                                            $year[$i]= $i;
+                                        }?> 
+                            <?php echo $this->Form->select('Order.exp_year',$year,array('div'=>false,'label'=>false,'class'=>'select select_small ','empty'=>'Select Year')); ?>
+                            <span for="OrderExpMonth" class="error expiration"></span>
+                            <span for="OrderExpYear" class="error expiration"></span>
+                            </p>
+                            
+                            
+                            
+                        </li>
+                        <li>
+                            <label>Card Type</label>
+                            <p class="padrt">
+                               <?php $cardtype = array ("amex"=>"American Express","Discover"=>"Discover","MasterCard"=>"MasterCard","Visa" => "Visa"); ?>
+                                <?php echo $this->Form->select('Order.card_type',$cardtype,array('div'=>false,'label'=>false,'class' => 'select fullwidth','empty'=>'Select')); ?>
+                            </p>
+                            
+                        </li>
+                        <li>
+                            <label>CVV</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('Order.cvv',array('div'=>false,'label'=>false,'placeholder' => 'CVV','class' => 'textfield fullwidth','type'=>'text','maxlength'=>4)); ?>
+                            </p>
+                        </li>
+                        <li>
+                            <label>Billing Address</label>
+                            <section class="radio-widget clearfix">
+                              <input type="checkbox" name="genre" id="sameaddresslink" value="action" /> <label for="sameaddresslink" class="font14"> Check if billing address is same as shipping address</label>
+                            </section>
+                        </li>
+                        <li>
+                            <label>Name</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.billing_name',array('label' => false,'div' => false, 'placeholder' => 'UserName','class' => 'textfield fullwidth','maxlength' => 55));?>
+                                
+                            </p>
+                        </li>
+                        
+                        <li>
+                            <label>Street 1</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.billing_street_1',array('label' => false,'div' => false, 'placeholder' => 'Street 1','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                         <li>
+                            <label>Street 2</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.billing_street_2',array('label' => false,'div' => false, 'placeholder' => 'Street 2','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                        
+                        <li>
+                            <label>City</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.billing_city',array('label' => false,'div' => false, 'placeholder' => 'City','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                        <li>
+                            <label>State</label>
+                            <p class="padrt">
+                              <?php echo $this->Form->input('OrderDetail.billing_state',array('type'=>'select','options'=>$statelist,'label' => false,'div' => false, 'empty' => 'Select State','class' => 'select fullwidth'));?>
+                            </p>
+                        </li>
+                        <li>
+                            <label>Zip</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.billing_zip',array('label' => false,'div' => false, 'placeholder' => 'Zip','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                        <li>
+                            <label>Phone</label>
+                            <p class="padrt">
+                                <?php echo $this->Form->input('OrderDetail.billing_phone',array('label' => false,'div' => false, 'placeholder' => 'Phone','class' => 'textfield fullwidth','maxlength' => 55));?>
+                            </p>
+                        </li>
+                       
+                    </ul>
+                </section>
+                
+                <section class="row-widget">
+                    <ul class="form_widget">
+                        <li class="buttonwdget clearfix">
+                            
+                            <input type="button" name="button" class="button graybtn fl-lt" value="Cancel" onclick="window.location='/feeds/index'">
+                            <?php echo $this->Form->submit("Checkout",array('class'=>"button fl-rt",'div'=>false));  ?>
+                        </li>
+                    </ul>
+                </section>
+               
+            </section>
+        </section>
+        <!--Left Closed-->
+ <?php echo $this->Form->end(); ?>
+    </section>
+</section>

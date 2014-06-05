@@ -1,0 +1,30 @@
+// JavaScript Document
+
+    jQuery(document).ready(function(){
+		jQuery(".menulinks").click(function(){
+			jQuery("nav").slideToggle(500);
+			jQuery(this).toggleClass("active");
+			return false;
+		 });
+		 
+		 jQuery(".facebook, .twitter").addClass("rotate");
+		 
+		jQuery( "#topSearchDivId" ).focus(function() {
+			if (this.value == 'Search'){this.value=''}
+			});			
+		jQuery( "#topSearchDivId" ).blur(function() {
+				if(this.value == ''){this.value='Search'}
+			});
+    });
+	function submitSearchForm()
+	{
+		if(jQuery('#topSearchDivId').val() == '' || jQuery('#topSearchDivId').val().toLowerCase() == 'search')
+		{
+			return false;
+		}
+		return true;
+	}
+	
+
+
+	

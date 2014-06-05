@@ -1,0 +1,15 @@
+<?php    
+    class UserProfile extends AppModel {
+        var $name = 'UserProfile';
+        
+        public $belongsTo = array(
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id',            
+            'dependent' => true
+        )
+        );
+        
+         
+    }
+?>

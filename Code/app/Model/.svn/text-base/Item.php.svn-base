@@ -1,0 +1,60 @@
+<?php    
+    class Item extends AppModel {
+        var $name = 'Item';        
+        public $validate = array(
+                                'name' => array(
+                                                    'rule'    => 'notEmpty',
+                                                    'message' => 'Please enter item name.'
+                                               ),
+								'brand_id' => array(
+                                                    'rule'    => 'notEmpty',
+                                                    'message' => 'Please select brand.'
+                                                ),
+								'category_id' => array(
+                                                    'rule'    => 'notEmpty',
+                                                    'message' => 'Please select category.'
+                                                ),
+								'price' => array(
+                                                    'rule'    => 'notEmpty',
+                                                    'message' => 'Please enetr price of item.'
+                                                )
+								
+                                );
+        public function deletebyid($id){
+            if($this->delete($id)){
+                return true;
+            }else{
+                return false;
+            }
+            
+        }
+    /*
+    * Defining Relationships
+    */
+    public $belongsTo = array(
+        'Category' => array(
+            'className' => 'Category',
+            'fields'    => array('id','category')
+        ),
+        'Brand' => array(
+            'className' => 'Brand',
+            'fields'    => array('id','brand')		
+        ),
+		'User' =>array(
+			'className' => 'User'
+		),
+    );
+	public $hasMany = array(
+        'UserComment' => array(
+            'className' => 'UserComment'		
+        ),
+		'UserLike' => array(
+            'className' => 'UserLike',
+			'order' => 'id DESC'
+        )
+    );
+    
+    }
+
+    
+?>

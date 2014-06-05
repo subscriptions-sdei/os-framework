@@ -1,0 +1,44 @@
+<?php
+	/**
+	* Name:  Twilio
+	*
+	* Author: Ben Edmunds
+	*		  ben.edmunds@gmail.com
+	*         @benedmunds
+	*
+	* Location:
+	*
+	* Created:  03.29.2011
+	*
+	* Description:  Twilio configuration settings.
+	*
+	*
+	*/
+
+	/**
+	 * Mode ("sandbox" or "prod")
+	 **/
+	$config['Twilio']['mode']   = 'sandbox';
+
+	/**
+	 * Account SID
+	 **/
+	$config['Twilio']['account_sid']   = 'AC7dc08e489ca84ebff3fcab30da9421a0';
+
+	/**
+	 * Auth Token
+	 **/
+	$config['Twilio']['auth_token']    = '33f756819ad3d6b561a880a50583bec0';
+
+	/**
+	 * API Version
+	 **/
+	$config['Twilio']['api_version']   = '2010-04-01';
+
+	/**
+	 * Twilio Phone Number
+	 **/
+	$config['Twilio']['number']        = '+12708734415';
+
+
+/* End of file twilio.php */

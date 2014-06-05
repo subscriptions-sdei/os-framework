@@ -1,0 +1,12 @@
+		<section class="container">
+			<section class="footerlinks">
+				<?php echo $this->Html->link('About','/about',array('title' => 'About us'));?> <span class="sep">|</span>
+				<?php echo $this->Html->link('Blog','javascript:void(0);',array('title' => 'Blog'));?>       <span class="sep">|</span>
+				<?php echo $this->Html->link('Faqs','/faqs',array('title' => 'Faqs'));?> <span class="sep">|</span>				
+				<?php echo $this->Html->link('Contact','/contact',array('title' => 'Contact us'));?>					
+			</section>
+			<section class="copyright">Copyright Ritzy <?php echo date('Y');?>, All rights reserved
+					<?php echo $this->Html->link('Terms','/terms',array('title' => 'Terms'));?> | <?php echo $this->Html->link('Privacy','/privacy',array('title' => 'Privacy'));?>
+			</section>
+			<section class="socilamedia"><a href="#" class="facebook">facebook</a><a href="#" class="twitter">twitter</a></section>
+		</section>

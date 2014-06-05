@@ -1,0 +1,567 @@
+2014-05-02 09:07:29 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-02 09:07:32 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-02 09:18:58 Notice: Notice (8): Indirect modification of overloaded property OrdersController::$data has no effect in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/OrdersController.php, line 117]
+Trace:
+OrdersController::admin_changeStatus() - APP/Controller/OrdersController.php, line 117
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-02 09:19:23 Notice: Notice (8): Indirect modification of overloaded property OrdersController::$data has no effect in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/OrdersController.php, line 117]
+Trace:
+OrdersController::admin_changeStatus() - APP/Controller/OrdersController.php, line 117
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-02 09:24:06 Notice: Notice (8): Undefined index: OrderDetail in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/ReportsController.php, line 217]
+Trace:
+ReportsController::generateReport() - APP/Controller/ReportsController.php, line 217
+ReportsController::admin_index() - APP/Controller/ReportsController.php, line 44
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-08 06:58:50 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-08 07:00:15 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-13 03:50:57 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-13 05:36:31 Notice: Notice (8): Undefined index: password in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 200]
+Trace:
+AdminsController::admin_addedit() - APP/Controller/AdminsController.php, line 200
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-13 05:36:47 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-14 06:54:53 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-14 06:55:06 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-14 06:55:13 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-14 06:55:28 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-14 06:55:34 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-14 06:55:46 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-14 07:18:09 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:11 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:11 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:27 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:27 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:27 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:27 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:37 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:37 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:37 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-19 04:32:37 Notice: Notice (8): Undefined variable: parentCatId in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Categories/admin_index.ctp, line 72]
+Trace:
+include - APP/View/Categories/admin_index.ctp, line 72
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-20 04:04:52 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-30 13:02:53 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-30 13:03:25 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-05-30 13:03:29 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-02 04:47:41 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-02 10:35:49 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 03:32:18 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 04:41:29 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 04:46:51 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 04:49:21 Notice: Notice (8): Undefined index: category_id in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Items/admin_add.ctp, line 65]
+Trace:
+include - APP/View/Items/admin_add.ctp, line 65
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 04:49:21 Notice: Notice (8): Undefined index: other_item_id in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Items/admin_add.ctp, line 88]
+Trace:
+include - APP/View/Items/admin_add.ctp, line 88
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 04:49:21 Notice: Notice (8): Undefined index: image in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Items/admin_add.ctp, line 231]
+Trace:
+include - APP/View/Items/admin_add.ctp, line 231
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 09:51:53 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 09:52:36 Notice: Notice (8): Undefined variable: breadcrumb in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Layouts/admin.ctp, line 55]
+Trace:
+include - APP/View/Layouts/admin.ctp, line 55
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::renderLayout() - CORE/Cake/View/View.php, line 523
+View::render() - CORE/Cake/View/View.php, line 468
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 09:54:34 Notice: Notice (8): Undefined variable: breadcrumb in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Layouts/admin.ctp, line 55]
+Trace:
+include - APP/View/Layouts/admin.ctp, line 55
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::renderLayout() - CORE/Cake/View/View.php, line 523
+View::render() - CORE/Cake/View/View.php, line 468
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 12:48:15 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 12:57:09 Notice: Notice (8): Undefined index: Setting in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Admins/admin_twilio_settings.ctp, line 5]
+Trace:
+include - APP/View/Admins/admin_twilio_settings.ctp, line 5
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 12:57:09 Notice: Notice (8): Undefined variable: action in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Admins/admin_twilio_settings.ctp, line 107]
+Trace:
+include - APP/View/Admins/admin_twilio_settings.ctp, line 107
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 12:57:09 Notice: Notice (8): Undefined variable: breadcrumb in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Layouts/admin.ctp, line 55]
+Trace:
+include - APP/View/Layouts/admin.ctp, line 55
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::renderLayout() - CORE/Cake/View/View.php, line 523
+View::render() - CORE/Cake/View/View.php, line 468
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 13:02:05 Notice: Notice (8): Undefined index: Setting in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Admins/admin_twilio_settings.ctp, line 5]
+Trace:
+include - APP/View/Admins/admin_twilio_settings.ctp, line 5
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 13:02:05 Notice: Notice (8): Undefined variable: action in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Admins/admin_twilio_settings.ctp, line 61]
+Trace:
+include - APP/View/Admins/admin_twilio_settings.ctp, line 61
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 13:02:05 Notice: Notice (8): Undefined variable: breadcrumb in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Layouts/admin.ctp, line 55]
+Trace:
+include - APP/View/Layouts/admin.ctp, line 55
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::renderLayout() - CORE/Cake/View/View.php, line 523
+View::render() - CORE/Cake/View/View.php, line 468
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 13:02:23 Notice: Notice (8): Undefined index: Setting in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Admins/admin_twilio_settings.ctp, line 5]
+Trace:
+include - APP/View/Admins/admin_twilio_settings.ctp, line 5
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-03 13:02:23 Notice: Notice (8): Undefined variable: breadcrumb in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Layouts/admin.ctp, line 55]
+Trace:
+include - APP/View/Layouts/admin.ctp, line 55
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::renderLayout() - CORE/Cake/View/View.php, line 523
+View::render() - CORE/Cake/View/View.php, line 468
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-04 03:57:29 Notice: Notice (8): Undefined variable: remember_me in [/var/www/html/pluginprojsvn/pluginprojsvn/app/Controller/AdminsController.php, line 87]
+Trace:
+AdminsController::admin_login() - APP/Controller/AdminsController.php, line 87
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 490
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 185
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-04 03:59:38 Notice: Notice (8): Undefined index: Setting in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Admins/admin_twilio_settings.ctp, line 5]
+Trace:
+include - APP/View/Admins/admin_twilio_settings.ctp, line 5
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::render() - CORE/Cake/View/View.php, line 460
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-04 03:59:38 Notice: Notice (8): Undefined variable: breadcrumb in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Layouts/admin.ctp, line 55]
+Trace:
+include - APP/View/Layouts/admin.ctp, line 55
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::renderLayout() - CORE/Cake/View/View.php, line 523
+View::render() - CORE/Cake/View/View.php, line 468
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-04 04:00:53 Notice: Notice (8): Undefined variable: breadcrumb in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Layouts/admin.ctp, line 55]
+Trace:
+include - APP/View/Layouts/admin.ctp, line 55
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::renderLayout() - CORE/Cake/View/View.php, line 523
+View::render() - CORE/Cake/View/View.php, line 468
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+
+2014-06-04 04:00:57 Notice: Notice (8): Undefined variable: breadcrumb in [/var/www/html/pluginprojsvn/pluginprojsvn/app/View/Layouts/admin.ctp, line 55]
+Trace:
+include - APP/View/Layouts/admin.ctp, line 55
+View::_evaluate() - CORE/Cake/View/View.php, line 929
+View::_render() - CORE/Cake/View/View.php, line 891
+View::renderLayout() - CORE/Cake/View/View.php, line 523
+View::render() - CORE/Cake/View/View.php, line 468
+Controller::render() - CORE/Cake/Controller/Controller.php, line 952
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 192
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 160
+[main] - APP/webroot/index.php, line 138
+

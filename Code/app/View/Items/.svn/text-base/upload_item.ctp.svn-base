@@ -1,0 +1,118 @@
+<?php   echo $this->Html->script('frontend_custom/upload_item'); ?>
+
+<section class="login-frame">
+    
+    <h1 class="heading">Upload Item for Sale</h1>
+     <?php echo $this->Form->create('Item', array('url' => array('controller' => 'items', 'action' => 'upload_item'),'id'=>'itemsAdd','type' => 'file'));            
+              echo $this->Form->hidden('Item.id',array('value'=>base64_encode($this->data['Item']['id'])));
+              echo $this->Form->hidden('picCount',array('value' => $picLimit,'id'=>'totalpIcCount'));
+    ?>
+    <ul class="form_widget">       
+        <li>
+            <label>Item Name <span class="star">*</span></label>
+            <p class="padrt">
+                <?php echo $this->Form->input('name',array('label' => false,'div' => false, 'placeholder' => 'Enter Name','class' => 'textfield fullwidth','maxlength' => 55));?>
+            </p>
+        </li>
+        <li>
+            <label>Description <span class="star">*</span></label>
+            <p class="padrt">
+                <?php echo $this->Form->input('description',array('label' => false,'div' => false, 'type' => 'textarea', 'placeholder' => 'Enter Description', 'escape' => false,'class' => 'textfield fullwidth','maxlength' => 255));?>
+            </p>
+        </li>
+        <li>
+            <label>Brand <span class="star">*</span></label>
+            <p class="padrt">
+                <?php echo $this->Form->input('brand_id',array('type'=>'select','options'=>$brands,'label' => false,'div' => false, 'empty' => 'Select Brand','class' => 'select fullwidth'));?>
+            </p>
+        </li>
+        <li>
+            <label>Category <span class="star">*</span></label>
+            <p class="padrt">
+                <?php echo $this->Form->input('category_id',array('type'=>'select','options'=>$categories,'label' => false,'div' => false, 'empty' => 'Select Category','class' => 'select fullwidth'));?>
+            </p>
+        </li>
+        <li  id= "itemTypeRadio">
+            <label>Item Type <span class="star">*</span></label>
+            <p class="radio-widget">
+                <?php echo $this->Form->input('item_type',array('type'=>'radio','options'=>array('D'=>"Dress",'S'=>'Shoes','O'=>'Other'),'label' => false,'div' => false,'legend'=>false,'class' => 'radio-inline','separator'=> '</span><span>',
+                                     'before' => '<span>',
+                                     'after' => '</span>',));?>
+            </p>
+        </li>
+        <li style= "display:none;" id="dressSizediv">
+            <label>Dress Size <span class="star">*</span></label>
+            <p class="padrt">
+                <?php echo $this->Form->input('dress_size',array('type'=>'select','options'=>$dressSize,'label' => false,'div' => false, 'empty' => 'Select Dress Size','class' => 'form-control'));?>
+            </p>
+        </li>
+        <li style= "display:none;" id="Shoesizediv">
+            <label>Shoe Size <span class="star">*</span></label>
+            <p class="padrt">
+                <?php echo $this->Form->input('shoe_size',array('type'=>'select','options'=>$shoeSize,'label' => false,'div' => false, 'empty' => 'Select Shoe Size','class' => 'form-control'));?>
+            </p>
+        </li>
+        <li style= "display:none;" id="otherItemsizediv">
+            <label>Shoe Size <span class="star">*</span></label>
+            <p class="padrt">
+                <?php echo $this->Form->input('other_item_size',array('type'=>'text','label' => false,'div' => false, 'placeholder' => 'Enter Size','class' => 'textfield fullwidth'));?>
+            </p>
+        </li>
+        <li>
+            <section class="clearfix">
+                <section class="section_col">
+                    <label>Old Price<span class="star">*</span></label>
+                    <p class="padrt">
+                        <?php echo $this->Form->input('old_price',array('type'=>'text','label' => false,'div' => false, 'placeholder' => 'Enter Old Price','class' => 'textfield fullwidth'));?>
+                    </p>
+                </section>
+                
+                <section class="section_col fl-rt">
+                    <label>Price <span class="star">*</span></label>
+                    <p class="padrt">
+                        <?php echo $this->Form->input('price',array('type'=>'text','label' => false,'div' => false, 'placeholder' => 'Enter Price','class' => 'textfield fullwidth'));?>
+                    </p>
+                </section>
+            </section>
+        </li>
+        <li>
+            <label>New With Label <span class="star">*</span></label>
+            <p class="padrt">
+                <?php echo $this->Form->input('new_with_lbl',array('label' => false,'div' => false,'type '=> 'checkbox', 'checked' => ($this->request->data['Item']['new_with_lbl']) ? 'checked' : '')); ?>
+            </p>
+        </li>
+        <li id= "mainimgcontainer">
+            <label>Image<span class="star">*</span></label>
+            <p class="padrt">
+                <?php echo $this->Form->input('ItemImage.image_name.0',array('label' => false,'div' => false, 'type' => 'file'));?>
+                <?php echo $this->Html->link('ADD MORE','javascript:void(0)',array('class'=>'addnewuploaderlink')); ?>
+            </p>
+        </li>
+       <div id= "adduploader">
+               
+        </div>
+        <li><span  ttlCount= "<?php echo count($this->data['ItemImage']); ?>" id= "oldpiccount"></span>
+            <label></label>
+            <section class="uploadpics clearfix">
+                <?php
+                  if(!empty($this->data['ItemImage'])) {
+                     foreach($this->data['ItemImage'] as $val){
+                        $imageName = 'items/thumb_small/'.$val['image'];                
+                        if(file_exists(WWW_ROOT.'/img/'.$imageName) && !empty($val['image']))
+                        {
+                           echo "<div class='uploaded-image' id =div_image_".$val['id']." >". $this->Html->image($imageName, array("title" => $this->data['Item']['name'])).' '.$this->Html->link($this->Html->image('admin/delete.png'),'javascript:void(0)',array('itmId'=>$val['id'],'class'=>'deleteimgLnk','escape'=>false))."</div>";
+                        }
+                     }
+                    
+                  }
+                ?>
+            </section>
+        </li>
+        <li class="buttonwdget clearfix">
+             <input type="button" name="button" class="button graybtn fl-lt" value="Cancel" onclick="window.location='/items/my_items'">
+            <input type="submit" value="Save" class="button loginbtn" name="button">
+        </li>    
+    </ul>
+     <?php echo $this->Form->end(); ?>
+</section>
+

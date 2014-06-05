@@ -1,0 +1,161 @@
+<?php
+    
+    class ClosetsController extends AppController {        
+        var $name = 'Closets';                
+        public $components = array('Paginator','Common');
+        function beforeFilter(){
+            parent::beforeFilter();    
+            
+        }  
+        /*
+            * index function
+            * Functionality -  details of user, including listings of user
+            * Developer - Navdeep Kaur
+            * Created date - 3-Mar-2014
+            * Modified date - 
+        */
+        function index($userName){
+            
+			$this->loadModel('User');           			
+			$this->getDressSizes();
+            $this->getShoeSizes();
+			$userName = $this->Common->stringConvertUscoreToSpace($userName);            
+			$userData = $this->User->find('first',array('conditions'=>array('User.username'=>$userName),'fields'=>array('User.id')));
+            $this->set('getUserIdDetail',$userData['User']['id']);
+            $this->render('/Feeds/index');   
+         
+        }
+		 /*
+            * getUserDetails function
+            * Functionality -  getUserDetails
+            * Developer - Navdeep Kaur
+            * Created date - 3-Mar-2014
+            * Modified date - 
+        */
+        function getUserDetails($userId){
+            $this->loadModel('User');
+            $this->loadModel('Item');
+			$this->loadModel('UserComment');
+			$this->loadModel('UserLike');
+			
+            $this->User->bindModel(array('hasMany'=>array('Item')));
+			$this->User->bindModel(array('hasMany'=>array('FollowingUser'=>array('className'=>'Following','foreignKey' => 'follower_user_id'),'FollowerUser'=>array('className'=>'Following','foreignKey' => 'following_user_id'))));
+			
+			
+//public $belongsTo = array(
+//        'Sender' => array(
+//            'className' => 'User',
+//            'foreignKey' => 'user_id'
+//        ),
+//        'Recipient' => array(
+//            'className' => 'User',
+//            'foreignKey' => 'recipient_id'
+//        )
+//    );			
+            //Containable user model
+			$this->User->Behaviors->load('Containable');
+			$this->Item->virtualFields['totalItem'] = 'COUNT("Item.id")';
+			$this->User->contain(array('FollowingUser','FollowerUser','UserProfile','Item'=>array('conditions'=>array('Item.status'=>1),'fields'=>array('totalItem'))));
+            $data = $this->User->find('first',array('conditions'=>array('User.id'=>$userId),'fields'=>array('User.id','User.first_name','User.username','UserProfile.website','UserProfile.city','UserProfile.state','User.image')));
+			return $data;
+        }
+    
+    
+	function follow_user($followingUserId, $followStatus){
+            $this->loadModel('Following');
+           
+            if($followingUserId){
+                $followerUserId = $this->Session->read('UserInfo.id');
+               
+                    if($followStatus == "Follow"){                    
+                        $this->request->data['Following']['follower_user_id'] = $followerUserId;
+                        $this->request->data['Following']['following_user_id'] = $followingUserId;
+                        if($this->Following->save($this->request->data)){
+                            echo 1; exit;
+                        }
+                    
+                    }else{ 
+                        $this->Following->deleteAll(array('Following.follower_user_id' =>$followerUserId,'following_user_id' =>$followingUserId), false);
+                        echo 2; exit;
+                    }
+               // }
+            }else{
+                echo 0; exit;
+            }
+            
+        }
+
+	function myLikes(){
+		$this->loadModel('UserLike');
+		$sessionUserId = $this->Session->read('UserInfo.id');
+		$this->set('getUserIdDetail',$sessionUserId);
+		$likedItemId = $this->UserLike->find('list',array('conditions'=>array('UserLike.user_id'=>$sessionUserId),'fields'=>array('id','item_id')));
+		if(!empty($likedItemId)){
+			$likedItemstr=  implode(',',$likedItemId);	
+		}else{
+			$likedItemstr= 0;
+		}		
+			
+			$this->layout = "frontend";
+            $this->loadModel('Item');
+            $this->getDressSizes();
+            $this->getShoeSizes();
+            $sessionUserId = $this->Session->read('UserInfo.id');
+            $this->set('sessionUserId',$sessionUserId);
+            $this->Item->bindModel(
+                                        array('hasOne' => array(
+                                                'ItemImage' => array(
+                                                    'className' => 'ItemImage',
+                                                    'conditions' => array('ItemImage.set_as_cover'=> 1)
+                                                )
+                                            )
+                                        )
+                                    );
+            //Containable user model
+			$this->Item->Behaviors->load('Containable');
+			$this->Item->hasMany['UserComment']['limit'] = 2;
+			$this->Item->contain(array('Category','Brand','ItemImage.image','UserLike'=>array('User'=>array('fields'=>array('User.id','first_name','last_name','username','image','created'))),'UserComment'=>array('User'=>array('fields'=>array('User.id','first_name','last_name','username','image','created')),'fields'=>array('UserComment.id','UserComment.user_id','UserComment.comment','UserComment.created')),'User'=>array('fields'=>array('User.id','first_name','last_name','username','image','created'))));
+            
+            
+            $this->Item->hasMany['UserComment']['order'] = 'UserComment.id DESC';
+           
+            $itemData  = $this->Item->find('all',array('conditions'=>array('Item.id IN ('.$likedItemstr.')'),'fields'=>array('Item.id','Item.unique_id','Item.name','Item.description','Item.price','Item.old_price','Item.brand_id','Item.category_id','Item.item_type','Item.dress_size','Item.shoe_size','Item.other_item_size','Item.new_with_lbl','created','Item.user_id'),'recursive'=>2,'order'=>'Item.id DESC'));
+            $this->set('itemData',$itemData);
+			$this->render('/Feeds/index');
+	}
+	function followers(){
+		$this->loadModel('Following');
+		$sessionUserId = $this->Session->read('UserInfo.id');
+		$this->set('sessionUserId',$sessionUserId);
+		$this->Following->bindModel(array('belongsTo'=>array('User'=>array('className'=>'User','foreignKey'=>'follower_user_id'))));
+		$follwingUserData = $this->Following->find('all',array('conditions'=>array('Following.following_user_id'=>$sessionUserId),'fields'=>array('Following.*','User.id','User.first_name','User.last_name','User.username')));
+		$mefollowing  = $this->Following->find('list',array('conditions'=>array('Following.follower_user_id'=>$sessionUserId),'fields'=>array('following_user_id')));
+		$this->set('follwingUserData',$follwingUserData);
+		$this->set('mefollowing',$mefollowing);
+	}
+	function followings(){
+		$this->loadModel('Following');
+		$sessionUserId = $this->Session->read('UserInfo.id');
+		$this->set('sessionUserId',$sessionUserId);
+		$this->Following->bindModel(array('belongsTo'=>array('User'=>array('className'=>'User','foreignKey'=>'following_user_id'))));
+		$follwingUserData = $this->Following->find('all',array('conditions'=>array('Following.follower_user_id'=>$sessionUserId),'fields'=>array('Following.*','User.id','User.first_name','User.last_name','User.username')));
+		$this->set('follwingUserData',$follwingUserData);
+		$mefollowing  = array($sessionUserId);
+		
+		$this->set('follwingUserData',$follwingUserData);
+		$this->set('mefollowing',$mefollowing);
+		$this->render('/Closets/followers');
+	}
+	function followersData($userId= 1){
+		$this->loadModel('Following');
+		$sessionUserId = $this->Session->read('UserInfo.id');
+		$this->set('sessionUserId',$sessionUserId);
+		$this->Following->bindModel(array('belongsTo'=>array('User'=>array('className'=>'User','foreignKey'=>'follower_user_id'))));
+		$follwingUserData = $this->Following->find('all',array('conditions'=>array('Following.following_user_id'=>$userId),'fields'=>array('Following.*','User.id','User.first_name','User.last_name','User.username')));
+		$mefollowing  = $this->Following->find('list',array('conditions'=>array('Following.follower_user_id'=>$sessionUserId),'fields'=>array('following_user_id')));
+		$this->set('follwingUserData',$follwingUserData);
+		$this->set('mefollowing',$mefollowing);
+		$this->render('/Closets/followers');
+	}
+	}	
+?>

@@ -1,0 +1,28 @@
+<?php    
+    class Category extends AppModel {
+        var $name = 'Category';        
+        
+         public $belongsTo = array(
+        'ParentCategory' => array(
+            'className' => 'Category',
+            'foreignKey' => 'parent_id',
+            'fields' => array('ParentCategory.id','ParentCategory.category'),
+            'dependent' => true
+        )
+        );
+        
+        public $validate = array(
+        'category' => array(
+            'rule'    => 'notEmpty',
+            'message' => 'Please enter the category name.'
+            ),
+        'parent_id' => array(
+            'rule'    => 'notEmpty',
+            'message' => 'Please select the parent category.'
+            )
+        );
+        
+        
+        
+    }
+?>

@@ -1,0 +1,11 @@
+<?php    
+    class Brand extends AppModel {
+        var $name = 'Brand';        
+        public $validate = array(
+        'brand' => array(
+            'rule'    => 'notEmpty',
+            'message' => 'Please enter the brand name.'
+        )
+    );   
+    }
+?>

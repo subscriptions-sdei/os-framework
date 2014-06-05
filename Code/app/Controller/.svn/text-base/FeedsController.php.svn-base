@@ -1,0 +1,184 @@
+<?php    
+    class FeedsController extends AppController {
+        var $name = 'Feeds';
+        
+		/**
+		 * feeds listing
+		 * @author       Navdeep kaur
+		 * @copyright     smartData Enterprise Inc.
+		 * @method        index
+		 * @param         
+		 * @return        error msg
+		 * @since         version 0.0.1
+		 * @version       0.0.1 
+		*/
+        
+		function index(){            
+			$this->loadModel('Item');
+			$this->getDressSizes();
+			$this->getShoeSizes();
+			$sessionUserId = $this->Session->read('UserInfo.id');
+			$this->set('sessionUserId',$sessionUserId);
+        }
+				
+        function like_item($itemUniqueId, $likeStatus){
+            $this->loadModel('UserLike');
+            $this->loadModel('Item');
+            if($itemUniqueId){
+                $loggedUserId = $this->Session->read('UserInfo.id');
+                $itemdata = $this->Item->find('first',array('conditions'=>array('Item.unique_id'=>$itemUniqueId),'fields'=>array('id','user_id')));
+                if($itemdata){
+                    if($likeStatus == "like"){                    
+                        $this->request->data['UserLike']['user_id'] = $loggedUserId;
+                        $this->request->data['UserLike']['item_id'] = $itemdata['Item']['id'];
+                        $this->request->data['UserLike']['item_user_id'] = $itemdata['Item']['user_id'];
+                        if($this->UserLike->save($this->request->data)){
+                            echo 1; exit;
+                        }
+                    
+                    }else{
+                        $this->UserLike->deleteAll(array('UserLike.item_id' => $itemdata['Item']['id'],'UserLike.user_id' =>$loggedUserId), false);
+                        echo 2; exit;
+                    }
+                }
+            }else{
+                echo 0; exit;
+            }
+            
+        }
+        function comment($itemUniqueId,$requestPage){
+            $this->loadModel('UserComment');
+            if($requestPage == "f"){
+                $limit = 2;
+                $order = 'UserComment.id DESC';
+            }else{
+                $limit = '';
+                 $order = 'UserComment.id ASC';
+            }
+            if(isset($this->request->data)){
+               if($this->request->data['UserComment']['comment'] != ""){
+                 $loggedUserId = $this->Session->read('UserInfo.id');
+                    $this->request->data['UserComment']['user_id'] = $loggedUserId;
+                    if($this->UserComment->save($this->request->data)){
+                        
+                        $data = $this->UserComment->find('all',array('conditions'=>array('UserComment.item_id'=>$this->request->data['UserComment']['item_id']),'limit'=>$limit,'order'=>$order));
+                        
+                        $this->set('data',$data);
+                    }
+               }
+            }else{
+                echo "1"; die;
+            }
+        }
+        function share($itemUniqueId){
+            $this->loadmodel('Item');
+            $this->getDressSizes();
+            $this->getShoeSizes();
+            if($itemUniqueId){
+                $this->Item->bindModel(
+                                        array('hasOne' => array(
+                                                'ItemImage' => array(
+                                                    'className' => 'ItemImage',
+                                                    'conditions' => array('ItemImage.set_as_cover'=> 1)
+                                                )
+                                            )
+                                        )
+                                    );
+                $itemData = $this->Item->find('first',array('conditions'=>array('Item.unique_id'=>$itemUniqueId),'recursive'=>2));
+                $this->set('itemData',$itemData);
+            }
+        }
+        function getCategories(){
+            $this->loadModel('Category');
+            $category = $this->Category->find('list',array('conditions'=>array('Category.status'=>1,'Category.parent_id >'=>0),'fields'=>array('id','category'),'order'=>array('Category.category ASC')));
+            return $category;
+        }
+        function getshowrooms(){
+            $this->loadModel('Showroom');
+            $showroom = $this->Showroom->find('list',array('conditions'=>array('Showroom.status'=>1),'fields'=>array('id','showroom'),'order'=>array('Showroom.showroom ASC')));
+            return $showroom;
+        }
+        function getBrands(){
+            $this->loadModel('Brand');
+            $showroom = $this->Brand->find('list',array('conditions'=>array('Brand.status'=>1),'fields'=>array('id','brand'),'order'=>array('Brand.brand ASC')));
+            return $showroom;
+        }
+        function item_details($itemUniqueId){
+            $this->loadmodel('Item');
+            $this->getDressSizes();
+            $this->getShoeSizes();
+            $sessionUserId = $this->Session->read('UserInfo.id');
+            $this->set('sessionUserId',$sessionUserId);
+            if($itemUniqueId){
+                $this->Item->bindModel(
+                                        array('hasMany' => array(
+                                                'ItemImage' => array(
+                                                    'className' => 'ItemImage',
+                                                    //'conditions' => array('ItemImage.set_as_cover'=> 1)
+                                                )
+                                            )
+                                        )
+                                    );
+                
+                $itemData = $this->Item->find('first',array('conditions'=>array('Item.unique_id'=>$itemUniqueId),'recursive'=>2));
+                $this->set('data',$itemData);
+                //pr($itemData);
+            }
+        }
+        function getUserCloset($userId = null){
+            $this->loadModel('Item');
+             
+            $this->Item->bindModel(
+                                        array('hasOne' => array(
+                                                'ItemImage' => array(
+                                                    'className' => 'ItemImage',
+                                                    'conditions' => array('ItemImage.set_as_cover'=> 1)
+                                                )
+                                            )
+                                        )
+                                    );
+            if($userId){
+                $usercloset = $this->Item->find('all',array('conditions'=>array('Item.user_id'=>$userId),'order'=>'Item.id DESC','limit'=>8));
+                return $usercloset;
+            }else{
+                
+            }
+            
+        }
+//        function getMore($lastItemId  = null){
+//            $this->layout = "";
+//            $this->loadModel('Item');
+//            $this->getDressSizes();
+//            $this->getShoeSizes();
+//            $sessionUserId = $this->Session->read('UserInfo.id');
+//            $this->set('sessionUserId',$sessionUserId);
+//            $this->Item->bindModel(
+//                                        array('hasOne' => array(
+//                                                'ItemImage' => array(
+//                                                    'className' => 'ItemImage',
+//                                                    'conditions' => array('ItemImage.set_as_cover'=> 1)
+//                                                )
+//                                            )
+//                                        ),false
+//                                    );
+//            $itemId = $this->Item->find('first',array('conditions'=>array('Item.unique_id'=>$lastItemId),'fields'=>array('Item.id')));
+//            //Containable user model
+//			$this->Item->Behaviors->load('Containable');
+//			$this->Item->hasMany['UserComment']['limit'] = 2;
+//			$this->Item->contain(array('Category','Brand','ItemImage.image','UserLike'=>array('User'=>array('fields'=>array('User.id','first_name','last_name','username','image','created'))),'UserComment'=>array('User'=>array('fields'=>array('User.id','first_name','last_name','username','image','created')),'fields'=>array('UserComment.id','UserComment.user_id','UserComment.comment','UserComment.created')),'User'=>array('fields'=>array('User.id','first_name','last_name','username','image','created'))));
+//            
+//            
+//            $this->Item->hasMany['UserComment']['order'] = 'UserComment.id DESC';
+//           
+//            $itemData  = $this->Item->find('all',array('conditions'=>array('Item.id <'=>$itemId['Item']['id']),'fields'=>array('Item.id','Item.unique_id','Item.name','Item.description','Item.price','Item.old_price','Item.brand_id','Item.category_id','Item.item_type','Item.dress_size','Item.shoe_size','Item.other_item_size','Item.new_with_lbl','created','Item.user_id'),'recursive'=>2,'order'=>'Item.id DESC','limit'=>3));
+//            $this->set('itemData',$itemData);
+//            if(empty($itemData)){
+//                echo "no"; die;
+//            }else{
+//               $this->render('/Elements/front/ajax_social_view'); 
+//            }
+//            
+//        }
+//       
+     
+    }

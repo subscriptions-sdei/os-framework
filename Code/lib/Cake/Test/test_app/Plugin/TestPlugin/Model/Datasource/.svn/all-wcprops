@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/test_app/Plugin/TestPlugin/Model/Datasource
+END
+TestSource.php
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/test_app/Plugin/TestPlugin/Model/Datasource/TestSource.php
+END
+TestOtherSource.php
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/test_app/Plugin/TestPlugin/Model/Datasource/TestOtherSource.php
+END

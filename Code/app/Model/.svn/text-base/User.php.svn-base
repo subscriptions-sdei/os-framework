@@ -1,0 +1,55 @@
+<?php    
+    class User extends AppModel {
+        var $name = 'User';
+        
+        
+        
+         public $hasOne = array(
+        'UserProfile' => array(
+            'className' => 'UserProfile',
+            'foreignKey' => 'user_id',            
+            'dependent' => true
+        )
+        );
+        
+        
+        
+        public $validate = array(
+        'first_name' => array(
+            'rule'    => 'notEmpty',
+            'message' => 'Please enter your first name.'
+        ),
+        'last_name' => array(
+            'rule'    => 'notEmpty',
+            'message' => 'Please enter your last name.'
+        ),        
+        'email' => array(
+            'email' => array(
+                'rule' => 'email',                
+                'message'    => 'Please enter a valid email address.'                
+            ),
+            'unique' => array(
+                'rule' => 'isUnique',                
+                'message'    => 'Email is already exists.'
+            )
+        ),
+        'username' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty',                
+                'message'    => 'Please enter a valid username.'                
+            ),
+            'unique' => array(
+                'rule' => 'isUnique',                
+                'message'    => 'Username is already exists.'
+            )
+        ),
+       
+        'password' => array(
+            'rule'    => array('minLength', '6'),
+            'message' => 'Please enter at least 6 characters.'
+        ),
+        
+        
+    );   
+    }
+?>

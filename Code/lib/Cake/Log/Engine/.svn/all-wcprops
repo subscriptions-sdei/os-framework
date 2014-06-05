@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Log/Engine
+END
+BaseLog.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Log/Engine/BaseLog.php
+END
+FileLog.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Log/Engine/FileLog.php
+END
+SyslogLog.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Log/Engine/SyslogLog.php
+END
+ConsoleLog.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Log/Engine/ConsoleLog.php
+END

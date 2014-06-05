@@ -1,0 +1,9 @@
+Api Notes :
+-------------
+1) Extract the source code in /app/Plugin directory of your cakephp 2.X folder structure
+2) Rename the root folder with api.
+3) Copy the below code into the bootstrap.php file (/app/Config/bootstrap.php)
+CakePlugin::loadAll(array(
+    'Api' => array('bootstrap' => true,'ignoreMissing' => true)
+));
+4) It's all done, Now you can access your web services as per provided api_notes, Please copy/refer the documentation for help.

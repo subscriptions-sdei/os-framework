@@ -1,0 +1,381 @@
+<?php
+    /*
+        * Admins Controller class
+        * Functionality -  Manage the admin login,listing,add 
+        * Developer - Gurpreet Singh Ahhluwalia
+        * Created date - 11-Feb-2014
+        * Modified date - 
+    */
+    	App::uses('Sanitize', 'Utility'); 
+    class AdminsController extends AppController {
+	
+        var $name = 'Admins';        
+        var $components = array('Email','Cookie','Common','Paginator');
+		   
+        function beforeFilter(){
+            parent::beforeFilter();    
+            
+        }        
+        /*
+            * admin_login function
+            * Functionality -  Admin login functionality
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 11-Feb-2014
+            * Modified date - 
+        */
+        function admin_login() {        
+            $userId = $this->Session->read('loggedUserInfo.id');            
+            if(!empty($userId)) {
+                $this->redirect('dashboard');
+            }
+            $this->layout = 'admin_login';
+			$this->set('title','Sign in');
+           
+			if(isset($this->request->data) && (!empty($this->request->data)))
+            {	
+				$this->Admin->set($this->request->data);				
+				if($this->Admin->validates(array('fieldList' => array('email', 'password')))) 
+				{	
+					//$email = mysql_real_escape_string($this->request->data['Admin']['email']);
+					//$user_password  = md5(mysql_real_escape_string($this->request->data['Admin']['password']));
+					$email = $this->request->data['Admin']['email'];
+					$user_password  = md5($this->request->data['Admin']['password']);					
+					$userInfo = $this->Admin->find('first',array('fields'=>array('id','first_name','last_name','email','welcome','password'),'conditions'=>array("Admin.email" => $email,"Admin.password" => $user_password)));                
+					if(!empty($userInfo['Admin']['password']) && ($userInfo['Admin']['password'] == $user_password) ) {
+						$this->Session->write('loggedUserInfo', $userInfo['Admin']);
+						$this->Session->write('ADMIN_SESSION', $userInfo['Admin']['id']);     
+						if(!empty($this->request->data['Admin']['remember_me'])) {
+						$email = $this->Cookie->read('AdminEmail');
+						$password = base64_decode($this->Cookie->read('AdminPass'));						
+						if(!empty($email) && !empty($password)) {
+								$this->Cookie->delete('AdminEmail');
+								$this->Cookie->delete('AdminPass');     
+						} 						
+						$cookie_email = $this->request->data['Admin']['email'];						
+						$this->Cookie->write('AdminEmail', $cookie_email, false, '+2 weeks');						
+						$cookie_pass = $this->request->data['Admin']['password'];
+						$this->Cookie->write('AdminPass', base64_encode($cookie_pass), false, '+2 weeks'); 
+						}else {
+							$email = $this->Cookie->read('AdminEmail');
+							$password = base64_decode($this->Cookie->read('AdminPass'));
+							if(!empty($email) && !empty($password)) {
+									$this->Cookie->delete('AdminEmail');
+									$this->Cookie->delete('AdminPass');     
+							}
+						}
+						$this->redirect('addedit');                    
+					}
+					else {						
+						$this->Session->setFlash("Email or Password is incorrect",'default',array('class'=>'flashError'));							
+						//$this->render();
+					}
+				}else{
+						$this->Session->setFlash("Please enter the valid Email or Password.",'default',array('class'=>'flashError'));	
+						//$this->render();
+					}
+            }else {
+				$email = $this->Cookie->read('AdminEmail');
+				$password = base64_decode($this->Cookie->read('AdminPass'));				
+				if(!empty($email) && !empty($password)) {
+					$remember_me  = true;
+					$this->request->data['Admin']['email']  = $email;
+					$this->request->data['Admin']['password']  = $password;					
+				}				
+			}
+			$this->set('remember_me',$remember_me);
+        }     
+        
+		/*
+            * admin_dashboard function
+            * Functionality -  Dashboard functionality
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 11-Feb-2014
+            * Modified date - 
+        */
+        function admin_dashboard()
+        {
+            
+            $this->set('navdashboard','class = "active"');
+			$this->set('breadcrumb','');
+        }
+		
+		/*
+            * admin_index function
+            * Functionality -  Admins Listing
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 11-Feb-2014
+            * Modified date - 
+        */
+        function admin_index()
+        {            
+            $conditions = 'Admin.id != '.$this->Session->read('loggedUserInfo.id');
+			$this->set('getData',$this->Admin->find('all',array('fields'=>array('id','first_name','last_name','email','phone','status'),'conditions'=> $conditions)));
+            
+			$this->set('navadmins','class = "active"');
+			$this->set('breadcrumb','Admins');
+			
+			
+        }
+		
+        /*
+            * admin_addedit function
+            * Functionality -  Add & edit the admin profile
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 11-Feb-2014
+            * Modified date - 
+        */
+        function admin_addedit($id = null)
+        {	
+			$id = ($id == null) ? $this->Session->read('loggedUserInfo.id') : $id;
+			if(empty($this->request->data)){
+				$this->request->data = $this->Admin->read(null, $id);			
+			}else
+			if(isset($this->request->data) && !empty($this->request->data))
+			{            
+				$this->Admin->set($this->request->data);				
+				
+				if ($this->Admin->validates(array('fieldList' => array('first_name','email')))) 				
+				{ 
+					$this->request->data['Admin']['id'] = $id;		
+					if($this->Admin->save($this->request->data))
+					{ 						
+						$this->Session->setFlash("The Profile has been updated successfully.",'default',array('class'=>'alert alert-success'));	
+						$this->redirect(array('action' => 'addedit'));
+					}
+				}    
+			}
+			$this->set('navadmins','class = "active"');
+			$this->set('breadcrumb','Edit Profile');
+        }
+		
+        /*
+            * admin_addedit function
+            * Functionality -  Add & edit the admin profile
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 11-Feb-2014
+            * Modified date - 
+        */		
+        function admin_changepassword()
+        {
+			if(isset($this->request->data) && !empty($this->request->data))
+			{	
+				$id = $this->Session->read('loggedUserInfo.id');				
+				$userInfo = $this->Admin->find('first',array('fields'=>array('id','password','email','first_name','last_name'),'conditions'=>array("Admin.id" => $id)));				
+				$Oldassword  = md5(trim($this->request->data['Admin']['old_password']));
+				
+				if(!empty($userInfo['Admin']['password']) && ($userInfo['Admin']['password'] == $Oldassword) ) {
+					unset($this->request->data['Admin']['old_password']);
+					unset($this->request->data['Admin']['confirm_password']);
+					$this->request->data['Admin']['id'] = $id;
+					$this->request->data['Admin']['password'] = md5(trim($this->request->data['Admin']['password']));
+					if($this->Admin->save($this->request->data))
+					{ 						
+						App::import('Model','Emailtemplate');
+						$this->Emailtemplate = new Emailtemplate;
+						$SITE_URL = Configure::read('BASE_URL');
+						
+						//$active =  '<a href = "' .$SITE_URL. '/admin/admins/verify/'.sha1($hashCode).'">Link </a>'; 
+						$template = $this->Emailtemplate->getEmailTemplate('change_admin_password');
+						$to = $userInfo['Admin']['email'];
+						$data1 = $template['Emailtemplate']['template'];					
+						$data1 = str_replace('{NAME}',ucfirst($userInfo['Admin']['first_name'].' '.$userInfo['Admin']['last_name']),$data1);
+						$data1 = str_replace('{EMAIL}',$userInfo['Admin']['email'],$data1);
+									
+						$subject = ucfirst(str_replace('_', ' ', $template['Emailtemplate']['name']));
+						$send_mail = $this->sendEmail($to,$subject,$data1);  
+						$this->Session->setFlash("Password has been updated successfully.",'default',array('class'=>'alert alert-success'));					}
+				}else{
+					$this->Session->setFlash("Entered password does not match.Please try again.",'default',array('class'=>'alert alert-danger'));				}				
+					$this->redirect(array('action' => 'changepassword'));
+			}
+			
+			
+			$this->set('navadmins','class = "active"');
+			$this->set('breadcrumb','Change Password');
+        }
+       
+	   
+		/*
+            * admin_addedit function
+            * Functionality -  Add & edit the admin profile
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 11-Feb-2014
+            * Modified date - 
+        */		
+        function admin_forgot_password()
+        {
+            $this->layout = 'admin_login';
+			$this->set('title','Forgot Password');
+			$this->set('title_for_layout','Forgot Password');
+			
+			if(!empty($this->request->data)){
+				$this->request->data = Sanitize::clean($this->request->data, array('encode' => false));
+				
+				
+				if(empty($this->request->data['Admin']['email'])){ 
+					$this->Session->setFlash('Please enter your email.','default',array('class'=>'alert alert-danger'));
+					$this->redirect(array('controller'=>'users','action'=>'forgot_password'));
+				}
+				//$this->Admin->validate=$this->Admin->validateForgotPassword;
+				
+				//if($this->Admin->validates()) { 
+					if(!empty($this->request->data['Admin']['email'])){ 
+						$getStatus = $this->checkEmailValidation($this->request->data['Admin']['email']);
+						if($getStatus) { 
+							$userArr=$this->Admin->find('first',array('conditions'=>array('Admin.email'=>trim($this->request->data['Admin']['email']),'Admin.status'=>1),'fields'=>array('Admin.id','Admin.first_name','Admin.last_name','Admin.email')));
+							
+							if(count($userArr) > 0){  
+								$passwd = $this->Common->getRandPass();
+								$this->Admin->id = $userArr['Admin']['id'];
+								$hashCode =  md5(uniqid(rand(), true));
+								$this->Admin->saveField('random_key',$hashCode, false);
+								App::import('Model','Emailtemplate');
+								$this->Emailtemplate = new Emailtemplate;
+								$SITE_URL = Configure::read('BASE_URL');
+								//$to = $userArr['Admin']['email'];
+								$link =  '<a href = "' .$SITE_URL. '/admin/admins/secure_check/'.$hashCode.'">Link </a>';  
+								$template = $this->Emailtemplate->getEmailTemplate('admin_forgot_password');
+								$to = $userArr['Admin']['email'];
+								$data1 = $template['Emailtemplate']['template'];					
+								$data1 = str_replace('[NAME]',ucfirst($userArr['Admin']['first_name']),$data1);
+								$data1 = str_replace('[EMAIL]',$userArr['Admin']['email'],$data1);	
+								$data1 = str_replace('[LINK]',$link,$data1);			
+								$subject = ucfirst(str_replace('_', ' ', $template['Emailtemplate']['name']));
+								
+								$send_mail = $this->sendEmail($to,$subject,$data1);
+								$this->Session->setFlash('Please check your mailbox to access the account.','default',array('class'=>'alert alert-danger'));
+								$this->redirect(array('controller'=>'admins','action'=>'login'));
+							} else{ 
+								$this->Session->setFlash('Invalid email address.','default',array('class'=>'alert alert-danger'));
+								$this->redirect(array('controller'=>'admins','action'=>'forgot_password'));
+							}
+						} else { 
+							$this->Session->setFlash('You have entered wrong email address.','default',array('class'=>'alert alert-danger'));
+							$this->redirect(array('controller'=>'admins','action'=>'forgot_password'));
+						}
+					}
+				//}
+			}
+			
+        }
+		
+		function admin_secure_check($uniqueKey){
+			$this->layout = 'admin_login';
+			$this->set('title','Forgot Password');
+			$this->set('title_for_layout','Forgot Password');
+			$this->set('uniqueKey',$uniqueKey);
+			$data = $this->Admin->find('first',array('conditions'=>array('Admin.random_key'=>$uniqueKey)));
+			if(empty($data)){
+				$this->Session->setFlash('Error Occured, Plesae check your secure code.','default',array('class'=>'alert alert-danger'));
+				$this->redirect(array('controller'=>'admins','action'=>'login'));
+			}
+			if(!empty($this->request->data)){
+				$adminId = $data['Admin']['id'];
+				$this->request->data['Admin']['id'] = $adminId;
+				$this->request->data['Admin']['password'] = md5($this->request->data['Admin']['password']);
+				$this->request->data['Admin']['random_key'] = "";
+				$this->Admin->save($this->request->data);
+				$this->Session->setFlash('Password changed successfully','default',array('class'=>'alert alert-success'));
+				$this->redirect(array('controller'=>'admins','action'=>'login'));
+			}
+		}
+		/**
+	Function Name:   checkEmailValidation
+	params:          NULL	
+	Description :    for the email validation - Front end
+	*/
+	public function checkEmailValidation($email){
+		$pattern = "^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$";
+		if (eregi($pattern, $email)){
+		   return true;
+		} else {
+		   return false; 
+		}
+	}
+		
+        /*
+            * admin_logout function
+            * Functionality -  Logout Admin 
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 11-Feb-2014
+            * Modified date - 
+        */
+        function admin_logout(){		            
+            $this->Session->delete('loggedUserInfo');			
+            $this->redirect('login');
+        }
+    
+    
+	
+	public function admin_newsletters() {
+	$this->loadModel('Newsletter');
+		$value ="";
+		$show ="";
+		$criteria='1 = 1'; 
+		if(!empty($this->request->data['Search'])){
+			if(isset($this->request->data['Search']['keyword']) && !empty($this->request->data['Search']['keyword'])){		   
+				$value = $this->request->data['Search']['keyword'];				  
+			}	
+			if($value !="") {
+					$criteria .= " AND Newsletter.title LIKE '%".$value."%'";						
+			}				
+			$this->Paginator->settings = array('conditions' => array($criteria));
+		}
+		else{
+			$this->Paginator->settings = $this->paginate;    
+		}
+		$this->set('getData',$this->Paginator->paginate('Newsletter'));
+		$this->set('keyword', $value);			
+		$this->set('navNewsletter','class = "active"');			
+		$this->set('breadcrumb','Newsletter');		
+		
+	}
+	function admin_add_newsletter($id = null)
+        {
+			$this->loadModel('Newsletter');
+			if(empty($this->request->data)){
+				$this->request->data = $this->Newsletter->read(null, base64_decode($id));			
+			}else
+			if(isset($this->request->data) && !empty($this->request->data))
+			{  
+				$this->Newsletter->set($this->request->data);	
+				if($this->Newsletter->validates()) 				
+				{ 
+					$this->request->data['Newsletter']['id'] = base64_decode($this->request->data['Newsletter']['id']);					
+					$this->request->data['Newsletter']['title'] = trim($this->request->data['Newsletter']['title']);					
+					if($this->Newsletter->save($this->request->data))
+					{ 	
+						$this->Session->setFlash("Newsletter has been saved sucessfully.",'default',array('class'=>'alert alert-success'));	
+						$this->redirect(array('action' => 'newsletters'));
+					}
+				}    
+			}
+			$textAction = ($id == null) ? 'Add' : 'Update';			
+			$this->set('navNewsletter','class = "active"');			
+			$this->set('action',$textAction);			
+			$this->set('breadcrumb','Newsletters/'.$textAction);
+			
+        }
+	function admin_sendNewsletter($newsletterId){
+		$newsletterId=  base64_decode($newsletterId);
+		$this->loadModel('Newsletter');
+		$this->loadModel('User');
+	
+		$data = $this->Newsletter->find('first',array('conditions'=>array('Newsletter.id'=>$newsletterId)));
+		$userData = $this->User->find('all',array('conditions'=>array('User.status'=>1),'fields'=>array('User.id','User.first_name','User.last_name','User.email')));
+		if($userData){ 
+			foreach($userData as $uData){
+				$to = $uData['User']['email'];
+				$data1 = $data['Newsletter']['template'];					
+					
+				$subject = ucfirst(str_replace('_', ' ',$data['Newsletter']['title']));
+				
+				$send_mail = $this->sendEmail($to,$subject,$data1);
+				
+			}
+			$this->Session->setFlash("Newsletter sent sucessfully.",'default',array('class'=>'alert alert-success'));	
+			$this->redirect(array('action' => 'newsletters'));
+		}
+	}
+}
+?>

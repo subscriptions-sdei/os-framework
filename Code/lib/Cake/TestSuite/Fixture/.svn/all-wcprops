@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/TestSuite/Fixture
+END
+CakeTestFixture.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/TestSuite/Fixture/CakeTestFixture.php
+END
+CakeTestModel.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/TestSuite/Fixture/CakeTestModel.php
+END
+CakeFixtureManager.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/TestSuite/Fixture/CakeFixtureManager.php
+END

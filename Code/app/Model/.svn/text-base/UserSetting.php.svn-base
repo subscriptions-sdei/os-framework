@@ -1,0 +1,15 @@
+<?php    
+    class UserSetting extends AppModel {
+        var $name = 'UserSetting';
+        
+        public $belongsTo = array(
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id',            
+            'dependent' => true
+        )
+        );
+        
+         
+    }
+?>

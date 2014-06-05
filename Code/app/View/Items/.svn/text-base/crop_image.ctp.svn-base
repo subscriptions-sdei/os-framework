@@ -1,0 +1,29 @@
+<?php echo $this->Html->script('jquery.min.js'); ?>
+<?php echo $this->Html->script('jquery.Jcrop.js');?>
+<?php echo $this->Html->css('frontend/jquery.Jcrop.css');?>
+<?php echo $this->Html->script('profile.js')?>
+
+<div id="cropContainer">
+    <div class="img_fr_profile">
+        <?php echo $this->Html->image('teams/'.$imageName,array('id'=>'cropbox'));?>
+    </div>
+    <div class="cropbtn">
+		<?php echo $this->Form->create('User',array('id'=>'imgForm','url'=>array('controller'=>'users','action'=>'cropImage',$imageName),'onsubmit'=>"return checkCoords('".$imageName."');",'inputDefaults'=>array('label'=>false,'div'=>false)));?>
+			<?php echo $this->Form->hidden('x',array('id'=>'x','name'=>'x'));?>
+			<?php echo $this->Form->hidden('x',array('id'=>'y','name'=>'y'));?>
+			<?php echo $this->Form->hidden('x',array('id'=>'w','name'=>'w'));?>
+			<?php echo $this->Form->hidden('x',array('id'=>'h','name'=>'h'));?>            
+			<?php echo $this->Form->submit('Crop Image',array('class'=>'grey-btn margin_t10 rt','value'=>'Crop Image','div'=>false));?>			
+		<?php echo $this->Form->end();?>
+    </div>	
+</div>
+
+<a id="image-close" style="display: inline;"></a>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+	jQuery('#cropbox').Jcrop({
+      aspectRatio: 1,
+      onSelect: updateCoords
+    });
+  });
+</script>

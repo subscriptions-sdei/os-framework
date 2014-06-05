@@ -1,0 +1,72 @@
+ jQuery(document).ready(function(){
+    jQuery("#uploadContainer").hide();
+    
+    // $(element).center();
+    jQuery.fn.center = function () 
+    {
+        this.css("position","absolute");
+        this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
+        this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
+        this.css("z-index",'2000');
+        return this;
+    }
+    
+    jQuery("#overlay,#image-close").on('click',function(){      
+      jQuery(".popup").html('').hide();
+      jQuery("#overlay").hide();
+    });
+});
+ 
+function uploadImage(obj){
+    jQuery("#cropDiv").html('<img src="/img/front/loading-plz.gif">');
+    jQuery("#overlay").show();
+    jQuery("#cropDiv").css({'top':'200px','left':'350px','z-index':'2000','position':'absolute','display':'block'});
+    var filename = jQuery(obj).val();
+    var extension = filename.split('.').pop().toLowerCase();
+    if(jQuery.inArray(extension, ['gif','png','jpg','jpeg']) == -1){
+        alert('Please upload jpg, png and gif files only.');
+        return false;
+    }
+    jQuery("form#upload").submit();
+}
+
+function showUploader(){
+    jQuery("#uploadContainer").slideDown('slow');
+}
+
+function loadFrame(imgName){
+    //jQuery("#profileImage").prop('src','../img/teams/'+imgName);
+    jQuery("#uploaded_file").val('');
+    jQuery("#uploadContainer").hide();
+    jQuery("#cropDiv").load('/items/cropImage/'+imgName);
+    jQuery("#overlay").show();
+    jQuery("#cropDiv").css({'top':'200px','left':'350px','z-index':'2000','position':'absolute','display':'block'});
+}
+
+//crop image   
+    
+  function updateCoords(c){
+    jQuery('#x').val(c.x);
+    jQuery('#y').val(c.y);
+    jQuery('#w').val(c.w);
+    jQuery('#h').val(c.h);
+  };
+
+  function checkCoords(imgName){
+    if (parseInt(jQuery('#w').val())) {
+	  jQuery.ajax({
+		'url':'/items/cropImage/'+imgName,
+		'data': jQuery("#imgForm").serialize(),
+		'type':'post',
+		'success':function(resp){
+		  jQuery("#profileImage").prop('src','../img/profile_pics/thumb/'+resp);
+		  jQuery("#overlay").hide();
+		  jQuery("#cropDiv").html('').hide();
+		  
+		}
+	  });
+	}else{
+	  alert('Please select a crop region then press submit.');    
+	}
+	return false;
+  };

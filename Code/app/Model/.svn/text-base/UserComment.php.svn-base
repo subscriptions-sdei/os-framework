@@ -1,0 +1,18 @@
+<?php    
+    class UserComment extends AppModel {
+        var $name = 'UserComment';
+        
+        public $belongsTo = array(
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id'
+        ),
+        'Item' => array(
+            'className' => 'Item',
+            'counterCache' => true
+        )
+        );
+        
+         
+    }
+?>

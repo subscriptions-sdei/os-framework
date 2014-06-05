@@ -1,0 +1,12 @@
+<?php    
+    class Showroom extends AppModel {
+        var $name = 'Showroom';        
+        public $validate = array(
+        'showroom' => array(
+                                'rule'    => 'notEmpty',
+                                'message' => 'Please enter the showroom name.'
+                            )
+        );
+        
+    }
+?>

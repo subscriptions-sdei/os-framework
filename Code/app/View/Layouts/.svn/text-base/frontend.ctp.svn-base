@@ -1,0 +1,56 @@
+    <!DOCTYPE html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]>     <html class="no-js"> <![endif]-->
+    <html>
+    <head>
+    <?php echo $this->Html->charset('UTF-8'); ?>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0,initial-scale=1.0,user-scalable=yes" />
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,700' rel='stylesheet' type='text/css'>
+    
+    <link href="<?php echo BASE_PATH.'/font-awesome/css/font-awesome.css';?>" rel="stylesheet"/>
+    <?php 
+        echo $this->Html->css('style');
+        echo $this->Html->css('jquery.selectbox');
+        echo $this->Html->css('media');
+        //echo $this->Html->script('jquery-latest');
+        echo $this->Html->script('jquery-1.7.2.min');
+        echo $this->Html->script('jquery.validate');
+        echo $this->Html->script('custom');
+    ?>
+    <script type="text/javascript">
+        var SITE_URL = "<?php echo BASE_PATH;?>";
+    </script>
+    
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Ritzy</title>
+    </head>
+    
+    <body>
+    <section id="main">
+        <header>
+           <?php echo $this->element('header'); ?>
+        </header>
+        <section class="headerwrap">
+            
+             <?php echo $this->Html->image("frontend/spacer.png", array("width" => "1","height" => "1",'alt' => 'image'));?> 
+            
+            </section>
+        <section class="container content">
+                <?php echo $this->fetch('content'); ?>            
+        </section>
+        <section class="push"></section>
+    </section>
+    <footer>
+    <?php echo $this->element('footer'); ?>
+      </footer>
+    <?php echo $this->Html->script('frontend/bootstrap.min'); ?>
+     <script type="text/javascript">
+        jQuery('#flashMessage').delay(5000).fadeOut('slow');
+    </script>
+    </body>
+    </html>

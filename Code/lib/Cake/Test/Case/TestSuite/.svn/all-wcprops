@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/TestSuite
+END
+CakeTestFixtureTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/TestSuite/CakeTestFixtureTest.php
+END
+HtmlCoverageReportTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/TestSuite/HtmlCoverageReportTest.php
+END
+CakeTestSuiteTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/TestSuite/CakeTestSuiteTest.php
+END
+CakeTestCaseTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/TestSuite/CakeTestCaseTest.php
+END
+ControllerTestCaseTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/lib/Cake/Test/Case/TestSuite/ControllerTestCaseTest.php
+END

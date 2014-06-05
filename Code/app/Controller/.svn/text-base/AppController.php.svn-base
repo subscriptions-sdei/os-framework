@@ -1,0 +1,283 @@
+<?php
+ob_start();
+/**
+ * Application level Controller
+ *
+ * This file is application-wide controller file. You can put all
+ * application-wide controller-related methods here.
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       app.Controller
+ * @since         CakePHP(tm) v 0.2.9
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
+
+App::uses('Controller', 'Controller');
+
+/**
+ * Application Controller
+ *
+ * Add your application-wide methods in the class below, your controllers
+ * will inherit them.
+ *
+ * @package		app.Controller
+ * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
+ */
+class AppController extends Controller {
+    
+    
+    var $helpers = array('Form','Html');
+    var $components =array('RequestHandler','Session');
+        
+    function beforeRender() {        
+        if($this->name == 'CakeError') {
+            $this->layout = 'error';
+        }
+    }
+    
+  
+    
+    function beforeFilter()
+    {
+		//if ($this->request->is('ajax')) {
+		//	return;
+		//}
+		
+		if(!empty($this->params['admin']) && ($this->params['action'] != 'admin_login' && $this->params['action'] != 'admin_forgot_password' && $this->params['action'] != 'admin_secure_check') && ($this->params['prefix'] == 'admin'))
+        {
+            $this->CheckAdminSession();            
+            $this->layout='admin';
+            $loggedUserInfo = $this->Session->read('loggedUserInfo');
+            $this->set('loggedUserInfo',$loggedUserInfo);            
+        }else{
+                // Frontend Login Session Management
+                if(($this->params['prefix'] != 'admin'))
+                {   
+
+					$layout = 'frontend';
+                    if(
+					   ($this->params['action'] != 'login') &&
+					   ($this->params['action'] != 'facebook_login') &&
+					   ($this->params['action'] != 'twitter_login') &&
+					   ($this->params['action'] != 'twitter_callback') &&
+					   ($this->params['action'] != 'twitter_error') &&
+					   ($this->params['action'] != 'twiiterXcheck') &&
+					   ($this->params['action'] != 'signup') &&
+                       
+                       ($this->params['action'] != 'crop_image') &&
+                       ($this->params['action'] != 'upload_crop_image') &&
+                       ($this->params['action'] != 'delete_crop_image') &&
+                       
+					   (($this->params['action'] != 'signup' && $this->params['controller'] != 'homes' && $this->params['action'] != 'secure_check' && $this->params['action'] != 'forgot_password')))
+                    {
+                        $this->checkUserSession();                        
+                    }else{
+                        $this->checkUserSessionWithoutLogin(); // Without users login Session check                        
+                        $layout = 'login';
+                    }
+                    $this->layout = $layout;
+                }
+        }
+    }
+    
+    /* Check admin session is Exist OR Not*/
+   function checkAdminSession() {        
+        	if(!$this->Session->check('loggedUserInfo')) {                                                
+                $this->redirect('/admin/admins/login');
+		}else {                    
+        }
+	}
+    
+    /** Check User Login Session */
+    function checkUserSession()
+    {
+        if(!$this->Session->check('UserInfo')) {
+            $this->redirect(array('controller' => 'users', 'action' => 'login'));
+        }else{            
+        }
+    }
+    /** When the user logged redirect to feed Page */
+    function checkUserSessionWithoutLogin()
+    {
+        $userId = $this->Session->read('UserInfo.id');
+		if(!empty($userId) &&
+		($this->params['action'] != 'signup') &&                       
+		($this->params['action'] != 'crop_image') &&
+		($this->params['action'] != 'upload_crop_image') &&
+		($this->params['action'] != 'delete_crop_image')) 
+		{
+            $this->redirect(array('controller' => 'feeds', 'action' => 'index'));
+        }
+    }
+    /** The function setStatus to active/Inactive/Delete the records based on controller/model */    
+    function setStatus($status,$CheckedList,$model,$controller,$action)
+    {
+        if(count($CheckedList) < 1)
+        {
+            $this->Session->setFlash("Please select the at least one record.",'default',array('class'=>'alert alert-danger'));					
+            
+        }else
+        {
+            for($i=0; $i<count($CheckedList); $i++)
+            {				
+                $this->$model->id = null;
+                $this->$model->id = base64_decode($CheckedList[$i]); 
+                
+                if($status == '1' || $status == '2')
+                {
+                    $statusValue = ($status == 1)  ? '1' : '0';
+                    $operation = ($status == 1)  ? 'active' : 'inactive';
+					$operation1 = ($status == 1)  ? 'activated' : 'inactivated';
+                    $this->$model->saveField('status', $statusValue);	
+                }else{						
+                    $this->$model->delete();
+                    $operation = 'deleted';
+                }
+            }
+            $message = (count($CheckedList) == 1) ? "Record has been ".$operation1." successfully" : "Records have been ".$operation1." successfully";				$this->Session->setFlash($message,'default',array('class'=>'alert alert-success'));
+        }
+        $this->redirect(array("controller" =>$controller , "action" => $action));			
+    }
+    
+    /** function to unbind all the models */
+	function unbindModelAll() { 
+	    $unbind = array(); 
+	    foreach ($this->belongsTo as $model=>$info) 
+	    { 
+	      $unbind['belongsTo'][] = $model; 
+	    } 
+	    foreach ($this->hasOne as $model=>$info) 
+	    { 
+	      $unbind['hasOne'][] = $model; 
+	    } 
+	    foreach ($this->hasMany as $model=>$info) 
+	    { 
+	      $unbind['hasMany'][] = $model; 
+	    } 
+	    foreach ($this->hasAndBelongsToMany as $model=>$info) 
+	    { 
+	      $unbind['hasAndBelongsToMany'][] = $model; 
+	    } 
+	    parent::unbindModel($unbind); 
+	}
+	# Functionality to get list of brands
+	function getBrandList(){
+		    $this->loadModel('Brand');
+			$brands = $this->Brand->find('list',array('conditions'=>array('Brand.status'=>1),'fields'=>array('id','brand'),'order'=>'brand ASC'));
+			$this->set('brands',$brands);
+	}
+	# Functionality to get list of categories
+	function getCategoryList(){
+		    $this->loadModel('Category');
+			$categories = $this->Category->find('list',array('conditions'=>array('Category.status'=>1,'Category.parent_id <>'=>0),'fields'=>array('id','category'),'order'=>'category ASC'));
+			$this->set('categories',$categories);
+	}
+	/* Get Dress Size */
+	function getDressSizes(){
+        $this->loadModel('DressSize');
+        $dressSize = $this->DressSize->find('list',array('fields'=>array('size','text'),'order'=>'id ASC'));
+		$this->set('dressSize',$dressSize);
+	}
+	/* Get shoe Size */
+	function getShoeSizes(){		
+        $this->loadModel('ShoeSize');
+        $shoeSize = $this->ShoeSize->find('list',array('fields'=>array('size','text'),'order'=>'id ASC'));
+		$this->set('shoeSize',$shoeSize);
+	}
+	
+	/* Get State List */
+	function getStateList()
+	{
+		$statelist = array("AL" => "Alabama","AK" => "Alaska","AZ" => "Arizona","AR" => "Arkansas","AS" => "American Samoa","CA" => "California","CO" => "Colorado","CT" => "Connecticut","DE" => "Delaware","DC" => "District of Columbia","FL" => "Florida","GA" => "Georgia","GU" => "Guam","HI" => "Hawaii","ID" => "Idaho","IL" => "Illinois","IN" => "Indiana","IA" => "Iowa","KS" => "Kansas","KY" => "Kentucky","LA" => "Louisiana","ME" => "Maine","MD" => "Maryland","MA" => "Massachusetts","MI" => "Michigan","MN" => "Minnesota","MS" => "Mississippi","MO" => "Missouri","MT" => "Montana","NE" => "Nebraska","NV" => "Nevada","NH" => "New Hampshire","NJ" => "New Jersey","NM" => "New Mexico","NY" => "New York","NC" => "North Carolina","ND" => "North Dakota","MP" => "Northern Marianas Islands","OH" => "Ohio","OK" => "Oklahoma","OR" => "Oregon","PA" => "Pennsylvania","PR" => "Puerto Rico","RI" => "Rhode Island","SC" => "South Carolina","SD" => "South Dakota","TN" => "Tennessee","TX" => "Texas","UT" => "Utah","VT" => "Vermont","VA" => "Virginia","VI" => "Virgin Islands","WA" => "Washington","WV" => "West Virginia","WI" => "Wisconsin","WY" => "Wyoming");
+		$this->set('statelist',$statelist);
+	}
+    
+    /* Search Conditions */
+    function getPriceArray()
+    {
+        $priceArray =  array('1' => '$25 and Under','2' => '$26 - $50','3' => '$51 - $100','4' => '$101 - $200','5' => '$201 and above');
+        return $priceArray;
+    }
+    
+    /* Search Conditions */
+    function getConditionArray()
+    {
+        $condtionArray =  array('1' => 'All','2' => 'New With Tags');
+        return $condtionArray;
+    }
+    
+    /* Availability */
+    function getAvailabilityArray()
+    {
+        $availabilityArray =  array('1' => 'All','2' => 'Available','2' => 'Sold');
+        return $availabilityArray;
+    }
+	
+	/*get show room category**********/
+	function getShowroomCategory(){
+		    $this->loadModel('ShowroomCategory');
+			$sCategory = $this->ShowroomCategory->find('list',array('fields'=>array('id','name'),'order'=>'name ASC'));
+			$this->set('sCategory',$sCategory);
+	}
+	
+    /*
+	* This function is used to send email with template  
+	* @author        Navdeep Kaur
+	* @copyright     smartData Enterprise Inc.
+	* @method        sendEmail
+	* @param         $to, $subject, $messages, $from, $reply,$path,$file_name
+	* @return        void 
+	* @since         version 0.0.1
+	* @version       0.0.1 
+	*/
+	public function sendEmail($to = null, $subject ='', $messages = null, $from=null, $reply = null,$path=null,$file_name = null){
+		$this->Email->smtpOptions = array(
+			'host' => Configure::read('host'),
+			'username' =>Configure::read('username'),
+			'password' => Configure::read('password'),
+			'timeout' => Configure::read('timeout')
+		);                
+        
+		$this->Email->delivery = 'mail';//possible values smtp or mail 
+        $admin_name = Configure::read('ADMIN_NAME');
+		if(empty($reply)){
+			$reply = $admin_name.'<'.Configure::read('replytoEmail').'>';
+		}
+		if(empty($from)){
+			$from = $admin_name.'<'.Configure::read('fromEmail').'>';
+		}
+		$this->Email->from = $from;
+		$this->Email->replyTo = $reply;
+		if($to == 'admin'){
+			$this->Email->to = $from;
+		} else {
+			$this->Email->to = $to;
+		}
+		
+		if(!empty($path) && !empty($file_name))
+		    $this->Email->attachments = array($file_name,$path.$file_name);
+		    
+		    if(empty($subject)){
+		       $subject='Admin'; 
+		    }
+		    $this->Email->subject = $subject;
+		    $this->set('data',$messages);
+		    $this->set('smtp_errors', $this->Email->smtpError);
+		    $this->Email->sendAs= 'both';
+		    $this->Email->template='comman_template';
+		 
+		if($this->Email->send()){
+			return true;
+		} else {
+			return false;
+		}
+	}
+}

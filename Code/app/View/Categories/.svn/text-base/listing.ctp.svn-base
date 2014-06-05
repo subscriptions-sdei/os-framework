@@ -1,0 +1,30 @@
+	<?php 
+	  echo $this->Html->script('frontend/form/jquery.selectbox-0.2');
+	  echo $this->Html->script('frontend/form/customInput.jquery');
+	?>
+	<script type="text/javascript">
+			jQuery(function () {
+				jQuery(".drpitem").selectbox();
+				jQuery('input').customInput();
+			});
+	</script>
+	<!--Filter options Start-->
+        <section class="shoptop">
+			<?php if(isset($categoryName) && !empty($categoryName))
+			{ ?>
+			<h1 class="title-widget"><?php echo $categoryName;?></h1>
+            <?php } ?>			
+			<?php echo $this->element("front/search_filter");?>
+        </section>
+        <!--Filter options Closed-->
+    	
+    	<section class="section-widget" id="pageViewId">           
+             <?php echo $this->element("front/shopping_view");?>
+        </section>
+        
+		
+	  
+	  <?php echo $this->Html->script('frontend/search_filter'); 	  
+			echo $this->Html->script('frontend/loadmore'); ?>
+
+    

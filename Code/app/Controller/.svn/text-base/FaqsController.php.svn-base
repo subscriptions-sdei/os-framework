@@ -1,0 +1,162 @@
+<?php
+    /*
+        * Faqs Controller class
+        * Functionality -  Manage the Faqs Management
+        * Developer - Gurpreet Singh Ahhluwalia
+        * Created date - 5-Mar-2014
+        * Modified date - 
+    */
+    class FaqsController extends AppController {        
+        var $name = 'Faqs';                
+		
+		public $components = array('Paginator','Common');
+		var $helpers = array('Common');
+		
+		public $paginate = array(
+        'limit' => 10,
+        'order' => array(
+            'Faq.id' => 'DESC'
+				)
+			);
+        
+        function beforeFilter(){
+            parent::beforeFilter();    
+            
+        }
+        
+        /*
+            * index function
+            * Functionality -  Faqs Listing
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 5-Mar-2014
+            * Modified date - 
+        */
+        
+        function index()
+        {
+			$getFaqArray = $this->Faq->find('all',array('fields' => array('Faq.id','Faq.title','Faq.description'),'conditions' => array('Faq.status' => '1'),'order' => 'Faq.id asc'));
+            $this->set(compact('getFaqArray'));
+            
+            $this->set('faqlink','active');	
+            
+        }
+        
+        
+        
+		/*
+            * admin_index function
+            * Functionality -  Faqs Listing
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 5-Mar-2014
+            * Modified date - 
+        */
+        function admin_index()
+        {            
+            /* Active/Inactive/Delete functionality */
+			if((isset($this->data["Faq"]["setStatus"])))
+			{
+				if(!empty($this->request->data['Faq']['status'])){
+					$status = $this->request->data['Faq']['status'];
+				}else
+				{
+					$this->Session->setFlash("Please select the action.",'default',array('class'=>'alert alert-danger'));	
+					$this->redirect(array('action' => 'index'));
+					
+				}
+				$CheckedList = $this->request->data['checkboxes'];
+				$model='Faq';				
+				$controller = $this->params['controller'];				
+				$action = $this->params['action'];				
+				$this->setStatus($status,$CheckedList,$model,$controller,$action); 			 
+			}
+			/* Active/Inactive/Delete functionality */			
+			$value ="";
+			$show ="";
+			$criteria='1 = 1'; 
+			if(!empty($this->request->data['Search'])){
+				if(isset($this->request->data['Search']['keyword']) && !empty($this->request->data['Search']['keyword'])){		   
+					$value = $this->request->data['Search']['keyword'];				  
+				}	
+				if($value !="") {
+						$criteria .= " AND Faq.title LIKE '%".$value."%'";						
+				}
+				/* Active & Inactive Search functionality */
+				if(isset($this->data['Search']['show'])){
+					$show = $this->data['Search']['show'];					
+				}				
+				if(isset($show) && $show =='0'){			
+					$criteria .= " AND Faq.status = '0'";			
+				}else if(isset($show) && $show =='1'){
+					$criteria .= " AND Faq.status = '1'";
+				}
+				/* Active & Inactive Search functionality */				
+				$this->Paginator->settings = array('conditions' => array($criteria));
+			}
+			else{
+			    $this->Paginator->settings = $this->paginate;    
+			}
+			
+            
+            
+            
+            
+            $this->set('getData',$this->Paginator->paginate('Faq'));
+			
+            $this->set('keyword', $value);
+			$this->set('show', $show);
+			$this->set('navfaqs','class = "active"');			
+			$this->set('breadcrumb','Faqs');			
+        }
+		
+        /*
+            * admin_addedit function
+            * Functionality -  Add & edit the Faqs
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 5-Mar-2014
+            * Modified date - 
+        */
+        function admin_addedit($id = null)
+        {	
+			if(empty($this->request->data)){				
+					$this->request->data = $this->Faq->read(null, base64_decode($id));				
+			}else
+			if(isset($this->request->data) && !empty($this->request->data))
+			{  
+				$this->Faq->set($this->request->data);	
+				if($this->Faq->validates()) 				
+				{ 
+					$this->request->data['Faq']['id'] = base64_decode($this->request->data['Faq']['id']);					
+					$this->request->data['Faq']['title'] = trim($this->request->data['Faq']['title']);					
+					if($this->Faq->save($this->request->data))
+					{ 	
+						$this->Session->setFlash("Faq has been saved sucessfully.",'default',array('class'=>'alert alert-success'));	
+						$this->redirect(array('action' => 'index'));
+					}
+				}    
+			}
+			$textAction = ($id == null) ? 'Add' : 'Update';			
+			$this->set('navfaqs','class = "active"');			
+			$this->set('action',$textAction);			
+			$this->set('breadcrumb','Faqs/'.$textAction);
+			
+        }
+		/*
+            * admin_delete function
+            * Functionality -  Add & edit the Faqs
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 5-Mar-2014
+            * Modified date - 
+        */       
+		function admin_delete($id = null)
+        {
+			$this->Faq->id = base64_decode($id);
+			$this->Faq->delete();
+			$this->Session->setFlash("Faq has been deleted sucessfully.",'default',array('class'=>'alert alert-success'));	
+			$this->redirect('index');
+		}
+		
+        
+    
+    }
+
+?>

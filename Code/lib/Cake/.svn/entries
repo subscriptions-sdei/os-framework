@@ -1,0 +1,215 @@
+10
+
+dir
+2
+http://172.24.0.222/repository/pluginproj/pluginprojsvn/lib/Cake
+http://172.24.0.222/repository/pluginproj
+
+
+
+2014-04-16T05:49:59.141683Z
+2
+pluginproj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+16eae78c-e162-4dc8-ae84-0fb7f4948078
+
+Test
+dir
+
+I18n
+dir
+
+Log
+dir
+
+Event
+dir
+
+Configure
+dir
+
+Controller
+dir
+
+Routing
+dir
+
+Core
+dir
+
+TestSuite
+dir
+
+Network
+dir
+
+Error
+dir
+
+basics.php
+file
+
+
+
+
+2014-04-16T06:03:59.703918Z
+196e7e3f1822e84b42706343a5b37921
+2014-04-16T05:49:59.141683Z
+2
+pluginproj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+23183
+
+Model
+dir
+
+LICENSE.txt
+file
+
+
+
+
+2014-04-16T06:03:59.703918Z
+21d9c6649f6586d2ff2a36f6e0404805
+2014-04-16T05:49:59.141683Z
+2
+pluginproj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1287
+
+Console
+dir
+
+Utility
+dir
+
+Cache
+dir
+
+VERSION.txt
+file
+
+
+
+
+2014-04-16T06:03:59.703918Z
+96e4cafde071c31226d0abfa2b178227
+2014-04-16T05:49:59.141683Z
+2
+pluginproj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1024
+
+bootstrap.php
+file
+
+
+
+
+2014-04-16T06:03:59.703918Z
+3c842df6701d694518f05a4accce2f1c
+2014-04-16T05:49:59.141683Z
+2
+pluginproj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+14354
+
+Config
+dir
+
+View
+dir
+

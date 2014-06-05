@@ -1,0 +1,11 @@
+<?php    
+    class Faq extends AppModel {
+        var $name = 'Faq';        
+        public $validate = array(
+        'faq' => array(
+            'rule'    => 'notEmpty',
+            'message' => 'Please enter the title.'
+        )
+    );   
+    }
+?>

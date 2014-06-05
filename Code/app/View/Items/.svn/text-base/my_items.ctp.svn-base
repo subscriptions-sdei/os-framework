@@ -1,0 +1,43 @@
+<?php   echo $this->Html->script('frontend_custom/feed_page');   
+        echo $this->Html->script('fancybox/jquery.fancybox');
+        echo $this->Html->css('fancybox/jquery.fancybox');    
+?>
+
+        <?php echo $this->Html->link('Add New Item For Sale',array('controller'=>'items','action'=>'upload_item'),array('escape'=>false,'class'=>'button')); ?>
+
+<section class="section-widget" style="margin-top: 30px;">    
+    <section class="clearfix isotope" id="containerId">
+    <?php   if(!empty($itemData)){
+                foreach($itemData as $data){ ?>
+    <?php // for($i=1; $i<=3;$i++)
+   // { ?>
+        <!--Post 1 Start-->
+        <section class="box-widget isotope-item">
+            <section class="topimage">
+                <p><?php echo $this->Html->link($this->Html->image($this->Common->getItemPic($data['ItemImage']['image']),array("alt" =>$data['Item']['name'] ,"title" => $data['Item']['name'])),array('controller'=>'feeds','action'=>'item_details',$data['Item']['unique_id']),array('escape'=>false));?></p>
+                <p class="post-title"><?php if(strlen($data['Item']['description']) > 30) {
+                                $stringCut = substr($data['Item']['description'], 0, 20);
+                                echo $string = substr($stringCut, 0, strrpos($stringCut, ' ')); ?>
+                                <a href="#" class="orangelink">...</a>
+                                <?php 
+                                }else
+                                {
+                                  echo $data['Item']['description'].' ';  
+                                }
+                               ?>
+                </p>
+            </section>
+            <section class="post-price overflow_h">
+                <section class="pricewidgt"><?php echo $this->Html->link('Edit Item',array('controller'=>'items','action'=>'upload_item',base64_encode($data['Item']['id'])),array('class'=>'orangelink')); ?></section>
+                
+                
+            </section>
+            
+        </section>
+        <!--Post 1 Closed-->
+      
+    <?php   }}else{ ?>
+       <section class="box-widget isotope-item" style="width:100%;margin:auto; text-align: center;"> <?php echo $this->Html->image('frontend/no_product.jpeg'); ?></section>  <?php } ?>
+      
+    </section>
+</section>

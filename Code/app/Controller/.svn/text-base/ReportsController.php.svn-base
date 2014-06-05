@@ -1,0 +1,183 @@
+<?php
+    /*
+        * Reports Controller class
+        * Functionality -  Manage the Reports Management
+        * Developer - Gurpreet Singh Ahhluwalia
+        * Created date - 5-Mar-2014
+        * Modified date - 
+    */
+    class ReportsController extends AppController {
+        var $name = 'Reports';                
+		
+		public $components = array('Paginator','Common');
+		var $helpers = array('Common');
+		
+		public $paginate = array(
+        'limit' => 10,
+        'order' => array(
+            'Reports.id' => 'DESC'
+				)
+			);
+        
+        function beforeFilter(){
+            parent::beforeFilter();    
+            
+        }
+        
+      
+        /*
+            * admin_addedit function
+            * Functionality -  Add & edit the Faqs
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 5-Mar-2014
+            * Modified date - 
+        */
+        function admin_index()
+        {	
+			$getReportArray = $this->Common->getReport();
+			$getUserArray = $this->Common->getUserType();
+			
+			
+			$userType = '';
+			
+			if(isset($this->request->data) && !empty($this->request->data))
+			{  
+				if(isset($this->request->data['Report']['user_type']))
+				{
+					$userType = $this->request->data['Report']['user_type']; 
+				}
+				$this->generateReport($this->request->data['Report']['report_id'], $userType, $this->request->data['Report']['start_date'], $this->request->data['Report']['end_date']);				
+			}
+			$textAction =  '' ;			
+			$this->set('navreports','class = "active"');			
+			$this->set('action',$textAction);			
+			$this->set('breadcrumb','Reports Management');
+			
+			$this->set(compact('getReportArray','getUserArray'));
+			
+        }
+		
+		/*
+            * generateReport function
+            * Functionality -  Generate Report .csv
+            * Developer - Gurpreet Singh Ahhluwalia
+            * Created date - 5-Mar-2014
+            * Modified date - 
+        */
+		function generateReport($report_type = null, $userType = null, $start_date = null, $end_Date = null)
+		{
+			// Report Type ('1' => 'Users', '2' => 'Orders', '3' => 'Payment', '4' => 'Commission', '5' => 'Withdrawal');
+			// User Type =  array('F' => 'Facebook', 'T' => 'Twitter', 'D' => 'Direct');
+			
+			$getUserData =  false;
+			if($report_type == '1')
+			{
+				$modelName = "User";
+				$getUserData = true;
+			}
+			
+			
+			
+			$condition = "(".$modelName.".created BETWEEN '".$this->convertDataFormat($start_date)." 00:00:00' AND '".$this->convertDataFormat($end_Date)." 23:59:59')"; // get data from two dates
+			
+			
+			if($getUserData) /* Generate User CSV */
+			{
+				$fileName = '';
+				$this->loadModel('User');
+				$this->loadModel('DressSize');
+				$this->loadModel('ShoeSize');				
+				$getStateList = $this->Common->getStateList();
+				$getUserType = $this->Common->getUserType();
+				$dressSize = $this->DressSize->find('list',array('fields'=>array('size','text'),'order'=>'id ASC'));
+				$shoeSize = $this->ShoeSize->find('list',array('fields'=>array('size','text'),'order'=>'id ASC'));
+				$getUserDetail = array();
+				$condition .= " AND (User.status = '1')";
+				if(!empty($userType))
+				{
+					$condition .= " AND (User.type='".$userType."')";
+				}
+				$getUserDetail = $this->User->find('all', array(
+											'fields' => array('User.id',
+															  'User.type',
+															  'User.first_name',
+															  'User.last_name',
+															  'User.email',
+															  'User.username',
+															  'User.created',
+															  'UserProfile.id',
+															  'UserProfile.shoe_size',
+															  'UserProfile.dress_size',
+															  'UserProfile.city',
+															  'UserProfile.state',
+															  'UserProfile.website',
+															  ),
+											'conditions' => array($condition)));
+			$csv_output='';
+			if(!empty($getUserDetail))
+			{
+			
+				$csv_output .= "User ID;User Type;First Name;Last Name;Email;Username;Shoe Size;Dress Size;City;State;Website;Created;";
+				$csv_output .="\n";
+				foreach($getUserDetail as $getUserArray)
+				{
+					$userType = ($getUserArray['User']['type']) ?  $getUserType[$getUserArray['User']['type']] : '';
+					$userShoeSize = ($getUserArray['UserProfile']['shoe_size']) ?  $shoeSize[$getUserArray['UserProfile']['shoe_size']] : '';
+					$userDressSize = ($getUserArray['UserProfile']['dress_size']) ?  $dressSize[$getUserArray['UserProfile']['dress_size']] : '';
+					$userState = ($getUserArray['UserProfile']['state']) ?  $getStateList[$getUserArray['UserProfile']['state']] : '';
+					
+					$csv_output .=
+								trim(html_entity_decode(str_replace(',','-',$getUserArray['User']['id']))).';'.
+								trim(html_entity_decode(str_replace(',','-',$userType))).';'.
+								trim(html_entity_decode(str_replace(',','-',$getUserArray['User']['first_name']))).';'.
+								trim(html_entity_decode(str_replace(',','-',$getUserArray['User']['last_name']))).';'.
+								trim(html_entity_decode(str_replace(',','-',$getUserArray['User']['email']))).';'.
+								trim(html_entity_decode(str_replace(',','-',$getUserArray['User']['username']))).';'.								
+								trim(html_entity_decode(str_replace(',','-',$userShoeSize))).';'.								
+								trim(html_entity_decode(str_replace(',','-',$userDressSize))).';'.								
+								trim(html_entity_decode(str_replace(',','-',$getUserArray['UserProfile']['city']))).';'.								
+								trim(html_entity_decode(str_replace(',','-',$userState))).';'.								
+								trim(html_entity_decode(str_replace(',','-',$getUserArray['UserProfile']['website']))).';'.								
+								trim(html_entity_decode(str_replace(',','-',$getUserArray['User']['created'])));					
+					$csv_output .="\n";
+				}
+			$csv_output .= "\n";
+			}else{
+				$csv_output .= "No Record Found.."; 
+			}
+			
+			$fileName = "users";
+			
+			
+			}
+			
+			//echo $csv_output;
+			//die();
+			
+			
+			
+			header("Content-type: application/vnd.ms-excel");
+			$filePath = $fileName."_".date("Ymd").".csv";
+			header("Content-Disposition: attachment; filename=".$filePath."");
+			header("Pragma: no-cache");
+			header("Expires: 0");
+			print $csv_output;
+			exit;
+			
+			
+			
+			
+			
+			
+		      
+		}
+		/* Convert date 01/02/2014 to 2014-02-01 Format */
+        function convertDataFormat($date = null)
+		{
+			$dateArray =  explode('/', $date);			
+			return $dateArray[2].'-'.$dateArray[1].'-'.$dateArray[0] ;			
+		}
+    
+    }
+
+?>

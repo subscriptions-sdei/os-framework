@@ -1,0 +1,5 @@
+<?php    
+    class ShoeSize extends AppModel {
+        var $name = 'ShoeSize';
+    }
+?>

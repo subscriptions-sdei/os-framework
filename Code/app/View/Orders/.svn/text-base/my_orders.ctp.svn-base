@@ -1,0 +1,7 @@
+<section class="container content">
+    <?php echo $this->Session->flash();?> 
+    
+        <h1 class="heading">My Orders</h1>
+         <?php echo $this->Html->link('  &nbsp;Back',array('controller'=>'feeds','action'=>'index'),array('escape'=>false,'style'=>'text-align:right','class'=>'button'));?>
+    <?php echo $this->Html->image('frontend/coming_soon.jpg'); ?>
+</section>

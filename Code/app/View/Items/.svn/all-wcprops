@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/app/View/Items
+END
+admin_index.ctp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/app/View/Items/admin_index.ctp
+END
+admin_add.ctp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/app/View/Items/admin_add.ctp
+END
+upload_item.ctp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/app/View/Items/upload_item.ctp
+END
+crop_image.ctp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/app/View/Items/crop_image.ctp
+END
+my_items.ctp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/app/View/Items/my_items.ctp
+END
+admin_set_images.ctp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repository/pluginproj/!svn/ver/2/pluginprojsvn/app/View/Items/admin_set_images.ctp
+END

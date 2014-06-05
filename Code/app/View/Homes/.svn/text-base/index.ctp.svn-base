@@ -1,0 +1,20 @@
+  <div id="fb-root"></div>
+  <?php  echo $this->Html->script('frontend/facebook');?>  
+    <section class="container content">
+        <p class="homelogo">
+            <?php echo $this->Html->link($this->Html->image("frontend/homelogo.png", array("alt" => "Ritzy","title" => "Ritzy")),"/",array('escape' =>false));?>
+        </p>
+        <h1>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</h1>
+        <section class="social-btns">
+            <section class="socialbtn">
+                <?php echo $this->Html->link($this->Html->image("frontend/signup_facebook.png", array("alt" => "SIGN UP FACEBOOK ACCOUNT","title" => "SIGN UP FACEBOOK ACCOUNT")),"javascript:void(0);",array('escape' =>false, 'onclick' => "login_facebook('".BASE_PATH."');"));?>
+            </section>        
+            <section class="socialbtn">
+                <?php echo $this->Html->link($this->Html->image("frontend/signup_twitter.png", array("alt" => "SIGN UP TWITTER ACCOUNT","title" => "SIGN UP TWITTER ACCOUNT")),"javascript:void(0);",array('escape' =>false, 'onclick' => "login_twitter('".BASE_PATH."');"));?>
+            </section>
+            <section class="socialbtn line-break">            
+                <?php echo $this->Html->link($this->Html->image("frontend/signup_email.png", array("alt" => "SIGN UP WITH YOUR EMAIL","title" => "SIGN UP WITH YOUR EMAIL")),"/users/signup",array('escape' =>false));?>
+            </section>
+        </section>  
+        <p>Already have an account? <?php echo $this->Html->link('Login here',array('escape' =>false,'controller' => 'users','action' => 'login'));?></p>
+    </section>
